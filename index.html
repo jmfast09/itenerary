@@ -17,6 +17,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 <style>
 html,body{margin:0;padding:0;height:100%;overscroll-behavior:none;background:#f5ead8;font-family:Figtree,system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
 a{color:#8c491a}
@@ -164,8 +166,23 @@ textarea{font-family:inherit}
     Object.assign({ k:'osaka', color:'#F2C9A4', top:'0px' }, BAR(9, 11))
   ];
 
-  // ── itinerário editável, guardado no dispositivo ──────────────────────────
-  var STORE_KEY = 'japao.itinerario.v2';
+  // ── itinerário partilhado entre dispositivos (Firestore) ───────────────────
+  var firebaseConfig = {
+    apiKey: "AIzaSyDspY6_H5GcGAZEhn-3mM5jc7T-xpdnEuA",
+    authDomain: "itenerary-a059f.firebaseapp.com",
+    projectId: "itenerary-a059f",
+    storageBucket: "itenerary-a059f.firebasestorage.app",
+    messagingSenderId: "671424497705",
+    appId: "1:671424497705:web:5d396db8c788bbdf733438"
+  };
+  var db = null, SYNC_DOC = null;
+  try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+    db.enablePersistence({ synchronizeTabs: true }).catch(function () {});
+    SYNC_DOC = db.collection('itineraries').doc('3cdc7402b7f7ca83948c6ecc0b4ce1f6');
+  } catch (e) {}
+
   var uidCounter = 0;
   function seedData() {
     return DAYS.map(function (d) {
@@ -185,18 +202,17 @@ textarea{font-family:inherit}
       b.items.forEach(function (it) { SEED_LOOKUP[it.uid] = it; });
     });
   });
-  (function loadPersisted() {
-    try {
-      var raw = window.localStorage.getItem(STORE_KEY);
-      if (raw) { var saved = JSON.parse(raw); if (Array.isArray(saved) && saved.length) DATA = saved; }
-    } catch (e) {}
-  })();
-  function persist() { try { window.localStorage.setItem(STORE_KEY, JSON.stringify(DATA)); } catch (e) {} }
 
-  // Atualiza nome/descrição/hora/tipo de itens já gravados no dispositivo
-  // para acompanhar correções feitas ao itinerário original (o utilizador
-  // nunca edita estes campos diretamente, só nota, posição e eliminação).
-  (function syncItemContent() {
+  function persist() {
+    if (!SYNC_DOC) return;
+    SYNC_DOC.set({ days: DATA, updatedAt: firebase.firestore.FieldValue.serverTimestamp() })
+      .catch(function (e) { console.error('Falha ao sincronizar itinerário', e); });
+  }
+
+  // Atualiza nome/descrição/hora/tipo de itens já gravados para acompanhar
+  // correções feitas ao itinerário original (o utilizador nunca edita estes
+  // campos diretamente, só nota, posição e eliminação). Devolve se mudou algo.
+  function syncItemContent() {
     var changed = false;
     DATA.forEach(function (day) {
       day.blocks.forEach(function (b) {
@@ -210,13 +226,13 @@ textarea{font-family:inherit}
         });
       });
     });
-    if (changed) persist();
-  })();
+    return changed;
+  }
 
   // Repara itinerários gravados antes de secções vazias deixarem de ser
   // removidas: volta a criar (vazias) as secções originais que tenham
-  // desaparecido por essa razão.
-  (function reconcileBlocks() {
+  // desaparecido por essa razão. Devolve se mudou algo.
+  function reconcileBlocks() {
     var changed = false;
     DATA.forEach(function (day, i) {
       var seedDay = DAYS[i];
@@ -227,8 +243,25 @@ textarea{font-family:inherit}
       });
       if (changed) day.blocks.sort(function (a, b) { return BLOCK_ORDER.indexOf(a.label) - BLOCK_ORDER.indexOf(b.label); });
     });
-    if (changed) persist();
-  })();
+    return changed;
+  }
+
+  if (SYNC_DOC) {
+    SYNC_DOC.onSnapshot(function (snap) {
+      if (snap.exists) {
+        var remote = snap.data();
+        if (remote && Array.isArray(remote.days) && remote.days.length) DATA = remote.days;
+      } else {
+        persist();
+      }
+      var changedA = syncItemContent();
+      var changedB = reconcileBlocks();
+      if (changedA || changedB) persist();
+      render();
+    }, function (err) {
+      console.error('Erro de sincronização do itinerário', err);
+    });
+  }
 
   function findItem(uid) {
     for (var i = 0; i < DATA.length; i++) {
