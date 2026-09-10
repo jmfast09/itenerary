@@ -199,7 +199,6 @@ textarea{font-family:inherit}
     if (!loc || loc.di === target) return;
     var label = DATA[loc.di].blocks[loc.bi].label;
     var it = DATA[loc.di].blocks[loc.bi].items.splice(loc.ii, 1)[0];
-    if (!DATA[loc.di].blocks[loc.bi].items.length) DATA[loc.di].blocks.splice(loc.bi, 1);
     var tb = null;
     for (var x = 0; x < DATA[target].blocks.length; x++) if (DATA[target].blocks[x].label === label) { tb = DATA[target].blocks[x]; break; }
     if (!tb) {
@@ -216,7 +215,6 @@ textarea{font-family:inherit}
     var loc = findItem(uid);
     if (!loc) return;
     DATA[loc.di].blocks[loc.bi].items.splice(loc.ii, 1);
-    if (!DATA[loc.di].blocks[loc.bi].items.length) DATA[loc.di].blocks.splice(loc.bi, 1);
     persist();
     state.det = null; state.sheetY = 0;
     render();
@@ -482,9 +480,8 @@ textarea{font-family:inherit}
           html += '<span style="display:block;margin-top:3px;font:400 12.5px/1.45 Figtree,system-ui;color:#645c50">' + esc(it.d) + '</span></span>';
           html += '<span style="flex:none;display:flex;flex-direction:column;align-items:center;gap:2px">';
           if (it.t) html += '<span style="font:700 11.5px/1 Figtree,system-ui;color:' + city.deep + ';padding-top:3px">' + esc(it.t) + '</span>';
-          html += '<span data-action="drag-handle" data-uid="' + esc(it.uid) + '" aria-label="Arrastar para reordenar" style="width:30px;height:30px;flex:none;display:flex;align-items:center;justify-content:center;cursor:grab;touch-action:none">';
-          html += '<svg width="13" height="17" viewBox="0 0 13 17" fill="#82796a"><circle cx="3" cy="3" r="1.5"></circle><circle cx="10" cy="3" r="1.5"></circle><circle cx="3" cy="8.5" r="1.5"></circle><circle cx="10" cy="8.5" r="1.5"></circle><circle cx="3" cy="14" r="1.5"></circle><circle cx="10" cy="14" r="1.5"></circle></svg>';
-          html += '</span></span>';
+          html += '<span data-action="drag-handle" data-uid="' + esc(it.uid) + '" aria-label="Arrastar para reordenar" style="width:30px;height:30px;flex:none;touch-action:none"></span>';
+          html += '</span>';
           html += '</button>';
         });
         html += '</div></div>';
@@ -722,7 +719,6 @@ textarea{font-family:inherit}
     var loc = findItem(uid);
     if (!loc) return;
     var it = DATA[loc.di].blocks[loc.bi].items.splice(loc.ii, 1)[0];
-    if (!DATA[loc.di].blocks[loc.bi].items.length) DATA[loc.di].blocks.splice(loc.bi, 1);
     var tb = null;
     for (var x = 0; x < DATA[loc.di].blocks.length; x++) if (DATA[loc.di].blocks[x].label === label) { tb = DATA[loc.di].blocks[x]; break; }
     if (!tb) {
@@ -736,7 +732,11 @@ textarea{font-family:inherit}
     }
     tb.items.splice(insertAt, 0, it);
     persist();
+    var scrollEl = document.getElementById('mainScroll');
+    var scrollPos = scrollEl ? scrollEl.scrollTop : 0;
     render();
+    var newScrollEl = document.getElementById('mainScroll');
+    if (newScrollEl) newScrollEl.scrollTop = scrollPos;
   }
 
   function beginDrag(handle, x, y) {
