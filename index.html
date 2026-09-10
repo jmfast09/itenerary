@@ -184,6 +184,24 @@ textarea{font-family:inherit}
     } catch (e) {}
   })();
   function persist() { try { window.localStorage.setItem(STORE_KEY, JSON.stringify(DATA)); } catch (e) {} }
+  function newUid() { return 'u' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+
+  // Repara itinerários gravados antes de secções vazias deixarem de ser
+  // removidas: volta a criar (vazias) as secções originais que tenham
+  // desaparecido por essa razão.
+  (function reconcileBlocks() {
+    var changed = false;
+    DATA.forEach(function (day, i) {
+      var seedDay = DAYS[i];
+      if (!seedDay) return;
+      seedDay.blocks.forEach(function (sb) {
+        var exists = day.blocks.some(function (b) { return b.label === sb.label; });
+        if (!exists) { day.blocks.push({ label: sb.label, items: [] }); changed = true; }
+      });
+      if (changed) day.blocks.sort(function (a, b) { return BLOCK_ORDER.indexOf(a.label) - BLOCK_ORDER.indexOf(b.label); });
+    });
+    if (changed) persist();
+  })();
 
   function findItem(uid) {
     for (var i = 0; i < DATA.length; i++) {
@@ -224,6 +242,28 @@ textarea{font-family:inherit}
     if (!loc) return;
     loc.item.note = text;
     persist();
+    render();
+  }
+  function defaultKindFor(label) {
+    if (label === 'Pequeno-almoço') return 'cafe';
+    if (label === 'Almoço' || label === 'Jantar') return 'food';
+    return 'spot';
+  }
+  function addItem(di, label, data) {
+    if (!data || !data.n || !data.n.trim()) return;
+    var day = DATA[di];
+    if (!day) return;
+    var blk = null;
+    for (var x = 0; x < day.blocks.length; x++) if (day.blocks[x].label === label) { blk = day.blocks[x]; break; }
+    if (!blk) {
+      blk = { label: label, items: [] };
+      day.blocks.push(blk);
+      day.blocks.sort(function (a, b) { return BLOCK_ORDER.indexOf(a.label) - BLOCK_ORDER.indexOf(b.label); });
+    }
+    blk.items.push({ uid: newUid(), k: data.k || 'spot', n: data.n.trim(), t: (data.t || '').trim(), d: (data.d || '').trim(), note: '' });
+    persist();
+    state.addBlock = null;
+    state.addForm = { n: '', t: '', d: '', k: 'spot' };
     render();
   }
   function detailFor(uid) {
@@ -267,7 +307,8 @@ textarea{font-family:inherit}
     return p;
   }
 
-  var state = { tab: 'hoje', day: 0, det: null, q: '', sheetY: 0, tDay: null };
+  var state = { tab: 'hoje', day: 0, det: null, q: '', sheetY: 0, tDay: null, addBlock: null, addForm: { n: '', t: '', d: '', k: 'spot' } };
+  var KIND_KEYS = ['spot', 'food', 'cafe', 'transit', 'hotel'];
   var live = { days: [], tabs: [], nextUid: null };
   var mapInstance = null;
   var mapToken = 0;
@@ -484,7 +525,9 @@ textarea{font-family:inherit}
           html += '</span>';
           html += '</button>';
         });
-        html += '</div></div>';
+        html += '</div>';
+        html += '<button type="button" data-action="add-item" data-block="' + esc(b.label) + '" style="margin-top:10px;width:100%;border:1.5px dashed rgba(32,30,29,.25);background:transparent;cursor:pointer;border-radius:16px;padding:10px;font:600 12.5px/1 Figtree,system-ui;color:#82796a">+ Adicionar</button>';
+        html += '</div>';
       });
     } else if (tab === 'dias') {
       html += '<div style="display:flex;flex-direction:column;gap:10px;padding-top:6px">';
@@ -571,6 +614,25 @@ textarea{font-family:inherit}
       html += '<button type="button" data-action="delete-item" aria-label="Eliminar" style="flex:none;width:50px;border:1.5px solid #dcd3c4;background:transparent;cursor:pointer;border-radius:999px;display:flex;align-items:center;justify-content:center">';
       html += '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#8c491a" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"></path><path d="M9 7V4h6v3"></path><path d="M6 7l1 13h10l1-13"></path></svg>';
       html += '</button>';
+      html += '</div></div></div>';
+    } else if (state.addBlock) {
+      var af = state.addForm;
+      html += '<div id="addBackdrop" style="position:absolute;inset:0;background:rgba(32,30,29,.4);display:flex;align-items:flex-end;z-index:80">';
+      html += '<div id="addPanel" style="width:100%;background:#f9f4ed;border-radius:28px 28px 0 0;padding:22px 22px 40px;box-shadow:0 12px 32px rgba(46,43,37,.22)">';
+      html += '<div style="width:44px;height:5px;border-radius:999px;background:#dcd3c4;margin:0 auto 16px"></div>';
+      html += '<h2 style="margin:0;font:400 22px/1.15 Caprasimo,system-ui">Adicionar a ' + esc(state.addBlock) + '</h2>';
+      html += '<div style="display:flex;gap:6px;margin-top:14px;flex-wrap:wrap">';
+      KIND_KEYS.forEach(function (k) {
+        var sel = af.k === k;
+        html += '<button type="button" data-action="add-kind" data-kind="' + k + '" style="border:0;cursor:pointer;border-radius:999px;padding:8px 13px;font:600 12px/1 Figtree,system-ui;background:' + (sel ? '#201e1d' : '#ebddc5') + ';color:' + (sel ? '#fff6ef' : '#645c50') + '">' + esc(KIND[k]) + '</button>';
+      });
+      html += '</div>';
+      html += '<input id="addNameInput" type="text" placeholder="Nome" value="' + esc(af.n) + '" style="margin-top:14px;width:100%;border:1px solid #dcd3c4;border-radius:16px;background:#ffffff;padding:12px 14px;font:500 14px/1.3 Figtree,system-ui;color:#201e1d;outline:none">';
+      html += '<input id="addTimeInput" type="text" placeholder="Hora (opcional, ex: 13:30)" value="' + esc(af.t) + '" style="margin-top:10px;width:100%;border:1px solid #dcd3c4;border-radius:16px;background:#ffffff;padding:12px 14px;font:500 13.5px/1.3 Figtree,system-ui;color:#201e1d;outline:none">';
+      html += '<textarea id="addDescInput" rows="2" placeholder="Nota (opcional)" style="margin-top:10px;width:100%;resize:none;border:1px solid #dcd3c4;border-radius:16px;background:#ffffff;padding:11px 13px;font:400 13.5px/1.45 Figtree,system-ui;color:#201e1d;outline:none">' + esc(af.d) + '</textarea>';
+      html += '<div style="display:flex;gap:10px;margin-top:16px">';
+      html += '<button type="button" data-action="add-cancel" style="flex:1;border:1.5px solid #dcd3c4;background:transparent;cursor:pointer;border-radius:999px;padding:13px;font:700 13.5px/1 Figtree,system-ui;color:#645c50">Cancelar</button>';
+      html += '<button type="button" data-action="add-confirm" style="flex:2;border:0;cursor:pointer;border-radius:999px;padding:13px;font:700 13.5px/1 Figtree,system-ui;background:#201e1d;color:#fff6ef">Adicionar</button>';
       html += '</div></div></div>';
     }
 
@@ -883,14 +945,27 @@ textarea{font-family:inherit}
         moveItem(state.det, +el.dataset.target);
       } else if (action === 'delete-item') {
         deleteItem(state.det);
+      } else if (action === 'add-item') {
+        setState({ addBlock: el.dataset.block, addForm: { n: '', t: '', d: '', k: defaultKindFor(el.dataset.block) }, det: null });
+      } else if (action === 'add-cancel') {
+        setState({ addBlock: null });
+      } else if (action === 'add-kind') {
+        state.addForm.k = el.dataset.kind;
+        render();
+      } else if (action === 'add-confirm') {
+        addItem(state.day, state.addBlock, state.addForm);
       }
       return;
     }
     if (e.target.id === 'sheetBackdrop') closeSheet();
+    if (e.target.id === 'addBackdrop') setState({ addBlock: null });
   });
 
   document.getElementById('app').addEventListener('input', function (e) {
     if (e.target.id === 'searchInput') setState({ q: e.target.value });
+    else if (e.target.id === 'addNameInput') state.addForm.n = e.target.value;
+    else if (e.target.id === 'addTimeInput') state.addForm.t = e.target.value;
+    else if (e.target.id === 'addDescInput') state.addForm.d = e.target.value;
   });
 
   document.getElementById('app').addEventListener('change', function (e) {
