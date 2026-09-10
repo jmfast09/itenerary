@@ -95,7 +95,7 @@ textarea{font-family:inherit}
     {label:'Tarde',items:[{t:'~25 min',k:'spot',n:'Kinkaku-ji',d:'~25-30 min de Arashiyama.'}]},
     {label:'Jantar',items:[{k:'food',n:'Musashi Sushi (Teramachi/Sanjo)',d:'Conveyor belt sushi. Aberto todos os dias 11:00–22:00.'}]}]},
    {n:'10',dow:'Quarta',date:'23 set',city:'Osaka',title:'Viagem para Osaka + Dotonbori',blocks:[
-    {label:'Pequeno-almoço',items:[{t:'9:30',k:'cafe',n:'ROBYN',d:'Em frente ao hotel. Café de bairro.'}]},
+    {label:'Pequeno-almoço',items:[{t:'9:30',k:'cafe',n:'ROBYN',d:'Em frente ao hotel. Café de bairro. Abre às 9:00.'}]},
     {label:'Manhã',items:[{t:'10:30',k:'hotel',n:'Checkout do Wayfarer Gojo',d:''},{k:'transit',n:'Hotel → Gojo Station → Kyoto Station',d:'A pé 7-10 min + metro Karasuma, 2 min.'},{t:'11:33',k:'transit',n:'Shinkansen Nozomi 137 → Osaka',d:'Car.2, Seat 18-D/E, ¥6.560.'},{k:'spot',n:'Osaka Castle + Nishinomaru Garden',d:''},{t:'15:00',k:'hotel',n:'Check-in no Royal Park Canvas Kitahama',d:'A partir das 15h.'}]},
     {label:'Almoço',items:[{k:'food',n:'Sandwich Parlour 47',d:'Vista para o rio, sandes frescas e limonada caseira.'}]},
     {label:'Noite',items:[{k:'spot',n:'Dotonbori',d:''},{k:'spot',n:'Hozenji Yokocho',d:''},{k:'spot',n:'Edion Namba',d:''},{k:'spot',n:'Pokémon Center Osaka DX',d:'Daimaru Shinsaibashi.'},{k:'food',n:'Ramen Choro / Dashimaki Sakaba Zerogo / Sushi no Suke Kitahama',d:'Escolher no dia. Ramen Choro: muito popular, considerar reservar.'}]}]},
@@ -179,6 +179,12 @@ textarea{font-family:inherit}
     });
   }
   var DATA = seedData();
+  var SEED_LOOKUP = {};
+  DATA.forEach(function (day) {
+    day.blocks.forEach(function (b) {
+      b.items.forEach(function (it) { SEED_LOOKUP[it.uid] = it; });
+    });
+  });
   (function loadPersisted() {
     try {
       var raw = window.localStorage.getItem(STORE_KEY);
@@ -186,6 +192,26 @@ textarea{font-family:inherit}
     } catch (e) {}
   })();
   function persist() { try { window.localStorage.setItem(STORE_KEY, JSON.stringify(DATA)); } catch (e) {} }
+
+  // Atualiza nome/descrição/hora/tipo de itens já gravados no dispositivo
+  // para acompanhar correções feitas ao itinerário original (o utilizador
+  // nunca edita estes campos diretamente, só nota, posição e eliminação).
+  (function syncItemContent() {
+    var changed = false;
+    DATA.forEach(function (day) {
+      day.blocks.forEach(function (b) {
+        b.items.forEach(function (it) {
+          var seed = SEED_LOOKUP[it.uid];
+          if (!seed) return;
+          if (it.n !== seed.n || (it.d || '') !== (seed.d || '') || (it.t || '') !== (seed.t || '') || it.k !== seed.k) {
+            it.n = seed.n; it.d = seed.d; it.t = seed.t; it.k = seed.k;
+            changed = true;
+          }
+        });
+      });
+    });
+    if (changed) persist();
+  })();
 
   // Repara itinerários gravados antes de secções vazias deixarem de ser
   // removidas: volta a criar (vazias) as secções originais que tenham
