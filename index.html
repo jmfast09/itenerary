@@ -53,7 +53,7 @@ textarea{font-family:inherit}
     {label:'Manhã',items:[{k:'spot',n:'Meiji Jingu',d:''},{k:'spot',n:'Yoyogi Park',d:''}]},
     {label:'Almoço',items:[{k:'food',n:'Tenkazushi Shibuya Dogenzaka',d:'Conveyor belt sushi. Aberto todos os dias 11:00–21:30.'}]},
     {label:'Tarde',items:[{k:'spot',n:'Takeshita Street',d:''},{k:'spot',n:'Omotesando',d:''},{k:'spot',n:'Pokémon Center Shibuya + Bic Camera + Don Quijote',d:'Shibuya Parco, 6F.'}]},
-    {label:'Noite',items:[{k:'spot',n:'Shibuya Crossing',d:''},{k:'spot',n:'Hachiko',d:''},{k:'spot',n:'Pôr do sol no Hikarie Sky Lobby',d:''},{k:'food',n:'Afuri Ramen (Shibuya)',d:'Direto, sem ir ao hotel. Yuzu Shio Ramen — caldo leve com toque cítrico; tem Tsukemen.'}]}]},
+    {label:'Jantar',items:[{k:'spot',n:'Shibuya Crossing',d:''},{k:'spot',n:'Hachiko',d:''},{k:'spot',n:'Pôr do sol no Hikarie Sky Lobby',d:''},{k:'food',n:'Afuri Ramen (Shibuya)',d:'Direto, sem ir ao hotel. Yuzu Shio Ramen — caldo leve com toque cítrico; tem Tsukemen.'}]}]},
    {n:'03',dow:'Quarta',date:'16 set',city:'Kamakura',title:'Day trip a Kamakura',blocks:[
     {label:'Pequeno-almoço',items:[{k:'cafe',n:'Rokumei Coffee Co.',d:'Dentro da Tokyo Station. Especialidade torrado na hora, conhecido pelo pour-over.'}]},
     {label:'Manhã',items:[{t:'~57 min',k:'transit',n:'Tokyo Station → Kamakura (JR Yokosuka Line)',d:'',url:'https://www.google.com/maps/search/?api=1&query=Tokyo%20Station%20Japan'},{k:'spot',n:'Kotoku-in (Grande Buda)',d:''},{k:'spot',n:'Hase-dera Temple',d:''}]},
@@ -229,6 +229,30 @@ textarea{font-family:inherit}
     return changed;
   }
 
+  // Renomeia secções já gravadas quando o itinerário original muda o nome
+  // de uma secção (ex: "Noite" passa a "Jantar"), preservando os itens que
+  // lá estavam. Corre antes de reconcileBlocks para não criar uma secção
+  // nova vazia com o nome atual em vez de renomear a antiga. Devolve se
+  // mudou algo.
+  var BLOCK_RENAMES = [{ day: 1, from: 'Noite', to: 'Jantar' }];
+  function renameBlocks() {
+    var changed = false;
+    BLOCK_RENAMES.forEach(function (r) {
+      var day = DATA[r.day];
+      if (!day) return;
+      var fromBlk = null, fromIdx = -1, toBlk = null;
+      day.blocks.forEach(function (b, i) {
+        if (b.label === r.from) { fromBlk = b; fromIdx = i; }
+        if (b.label === r.to) toBlk = b;
+      });
+      if (!fromBlk) return;
+      if (toBlk) { toBlk.items = toBlk.items.concat(fromBlk.items); day.blocks.splice(fromIdx, 1); }
+      else fromBlk.label = r.to;
+      changed = true;
+    });
+    return changed;
+  }
+
   // Repara itinerários gravados antes de secções vazias deixarem de ser
   // removidas: volta a criar (vazias) as secções originais que tenham
   // desaparecido por essa razão. Devolve se mudou algo.
@@ -255,8 +279,9 @@ textarea{font-family:inherit}
         persist();
       }
       var changedA = syncItemContent();
+      var changedR = renameBlocks();
       var changedB = reconcileBlocks();
-      if (changedA || changedB) persist();
+      if (changedA || changedR || changedB) persist();
       render();
     }, function (err) {
       console.error('Erro de sincronização do itinerário', err);
