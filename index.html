@@ -120,11 +120,11 @@ textarea{font-family:inherit}
   ];
 
   var BILHETES = [
-   {kind:'Shinkansen',date:'20 set',route:'Tóquio → Kyoto',time:'Nozomi 33 · 12:30 → 14:44',tags:['Green','Car. 9','14-A/B'],dot:'#2F5AA8'},
-   {kind:'Shinkansen',date:'23 set',route:'Kyoto → Osaka',time:'Nozomi 137 · 11:33',tags:['Car. 2','18-D/E','¥6.560'],dot:'#2F5AA8'},
-   {kind:'Parque',date:'24 set',route:'Universal Studios Japan · 1-Day Studio Pass',time:'2 bilhetes · Adulto',tags:['¥10.900 cada','KLOOK Travel'],dot:'#A2591A'},
-   {kind:'Parque',date:'24 set',route:'Universal Express Pass 4 · Minion & Hollywood Dream',time:'Super Nintendo World 10:30–11:30',tags:['Mine Cart Madness 10:30–11:00','JAWS ou Hollywood Dream','2 bilhetes · ¥16.800 cada'],dot:'#A2591A'},
-   {kind:'Shinkansen',date:'25 set',route:'Shin-Osaka → Tóquio',time:'Nozomi 10 · 10:30 → 12:57',tags:['Green','Car. 8','8-A/B'],dot:'#2F5AA8'},
+   {kind:'Shinkansen',date:'20 set',route:'Tóquio → Kyoto',time:'Nozomi 33 · 12:30 → 14:44',tags:['Green','Car. 9','14-A/B'],dot:'#2F5AA8',link:'https://drive.google.com/drive/folders/1qywjZ7g4bKsFsaJQLJD9PPqZsDJfk_RF?usp=drive_link'},
+   {kind:'Shinkansen',date:'23 set',route:'Kyoto → Osaka',time:'Nozomi 137 · 11:33',tags:['Car. 2','18-D/E'],dot:'#2F5AA8',link:'https://drive.google.com/drive/folders/19L-rwjwWowxTqsQAPfTXDac4-XHAFiPw?usp=drive_link'},
+   {kind:'Parque',date:'24 set',route:'Universal Studios Japan · 1-Day Studio Pass',time:'2 bilhetes · Adulto',tags:['KLOOK Travel'],dot:'#A2591A',link:'https://drive.google.com/drive/folders/1t2GR_StUE3rDgOxMFuuP5mS7vlLI-kEe?usp=drive_link'},
+   {kind:'Parque',date:'24 set',route:'Universal Express Pass 4 · Minion & Hollywood Dream',time:'Super Nintendo World 10:30–11:30',tags:['Mine Cart Madness 10:30–11:00','JAWS ou Hollywood Dream','2 bilhetes'],dot:'#A2591A',link:'https://drive.google.com/drive/folders/1t2GR_StUE3rDgOxMFuuP5mS7vlLI-kEe?usp=drive_link'},
+   {kind:'Shinkansen',date:'25 set',route:'Shin-Osaka → Tóquio',time:'Nozomi 10 · 10:30 → 12:57',tags:['Green','Car. 8','8-A/B'],dot:'#2F5AA8',link:'https://drive.google.com/drive/folders/1ZFI9LwlyJaGvbNBDl7JpcFCwxpIYOVgW?usp=drive_link'},
    {kind:'Comboio',date:'25 set',route:'Tokyo Station → Narita',time:'Narita Express · ~1h',tags:['Chegar 3h antes'],dot:'#D89154'},
    {kind:'Voo',date:'25 set',route:'Tóquio → Abu Dhabi',time:'EY801 · 18:00 → 00:20',tags:['Etihad'],dot:'#5F9A85'},
    {kind:'Voo',date:'26 set',route:'Abu Dhabi → Lisboa',time:'EY99 · 02:05 → ~07:20',tags:['Etihad'],dot:'#5F9A85'}
@@ -585,7 +585,9 @@ textarea{font-family:inherit}
         t.tags.forEach(function (tag) {
           html += '<span style="background:#f0fae1;color:#3d472b;border-radius:999px;padding:6px 11px;font:600 11.5px/1 Figtree,system-ui">' + esc(tag) + '</span>';
         });
-        html += '</div></div>';
+        html += '</div>';
+        if (t.link) html += '<a href="' + esc(t.link) + '" target="_blank" rel="noopener" style="display:block;text-align:center;text-decoration:none;margin-top:12px;border-radius:999px;padding:11px;background:' + t.dot + ';color:#ffffff;font:700 13px/1 Figtree,system-ui">Ver bilhete</a>';
+        html += '</div>';
       });
       html += '</div>';
     }
