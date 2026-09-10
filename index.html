@@ -229,12 +229,36 @@ textarea{font-family:inherit}
     state.day = target;
     render();
   }
+  var undoTimer = null;
   function deleteItem(uid) {
     var loc = findItem(uid);
     if (!loc) return;
-    DATA[loc.di].blocks[loc.bi].items.splice(loc.ii, 1);
+    var label = DATA[loc.di].blocks[loc.bi].label;
+    var removed = DATA[loc.di].blocks[loc.bi].items.splice(loc.ii, 1)[0];
     persist();
     state.det = null; state.sheetY = 0;
+    state.undo = { day: loc.di, label: label, item: removed, itemIndex: loc.ii };
+    clearTimeout(undoTimer);
+    undoTimer = setTimeout(function () { state.undo = null; render(); }, 6000);
+    render();
+  }
+  function undoDelete() {
+    var u = state.undo;
+    if (!u) return;
+    clearTimeout(undoTimer);
+    var day = DATA[u.day];
+    if (!day) { state.undo = null; render(); return; }
+    var blk = null;
+    for (var x = 0; x < day.blocks.length; x++) if (day.blocks[x].label === u.label) { blk = day.blocks[x]; break; }
+    if (!blk) {
+      blk = { label: u.label, items: [] };
+      day.blocks.push(blk);
+      day.blocks.sort(function (a, b) { return BLOCK_ORDER.indexOf(a.label) - BLOCK_ORDER.indexOf(b.label); });
+    }
+    var insertAt = Math.min(u.itemIndex, blk.items.length);
+    blk.items.splice(insertAt, 0, u.item);
+    persist();
+    state.undo = null;
     render();
   }
   function setNote(uid, text) {
@@ -307,7 +331,7 @@ textarea{font-family:inherit}
     return p;
   }
 
-  var state = { tab: 'hoje', day: 0, det: null, q: '', sheetY: 0, tDay: null, addBlock: null, addForm: { n: '', t: '', d: '', k: 'spot' } };
+  var state = { tab: 'hoje', day: 0, det: null, q: '', sheetY: 0, tDay: null, addBlock: null, addForm: { n: '', t: '', d: '', k: 'spot' }, undo: null };
   var KIND_KEYS = ['spot', 'food', 'cafe', 'transit', 'hotel'];
   var live = { days: [], tabs: [], nextUid: null };
   var mapInstance = null;
@@ -593,6 +617,13 @@ textarea{font-family:inherit}
       html += '<button type="button" data-action="switch-tab" data-idx="' + i + '" style="flex:1;border:0;cursor:pointer;border-radius:999px;padding:10px 4px;background:' + t.bg + ';color:' + t.fg + ';font:700 11.5px/1 Figtree,system-ui">' + esc(t.label) + '</button>';
     });
     html += '</div>';
+
+    if (state.undo) {
+      html += '<div style="position:absolute;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom) + 74px);background:#201e1d;color:#fff6ef;border-radius:16px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 8px 20px rgba(0,0,0,.3);z-index:90">';
+      html += '<span style="font:500 13px/1.3 Figtree,system-ui">Item eliminado</span>';
+      html += '<button type="button" data-action="undo-delete" style="border:0;background:transparent;cursor:pointer;color:#f2c9a4;font:700 13px/1 Figtree,system-ui">Desfazer</button>';
+      html += '</div>';
+    }
 
     if (det) {
       html += '<div id="sheetBackdrop" style="position:absolute;inset:0;background:rgba(32,30,29,.4);display:flex;align-items:flex-end;z-index:80">';
@@ -954,6 +985,8 @@ textarea{font-family:inherit}
         render();
       } else if (action === 'add-confirm') {
         addItem(state.day, state.addBlock, state.addForm);
+      } else if (action === 'undo-delete') {
+        undoDelete();
       }
       return;
     }
