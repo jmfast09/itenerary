@@ -360,21 +360,31 @@ textarea{font-family:inherit}
   function wireSwipe() {
     var el = document.getElementById('mainScroll');
     if (!el) return;
-    el.addEventListener('pointerdown', function (e) { swipeX = e.clientX; swipeY = e.clientY; swipeMoved = false; });
-    el.addEventListener('pointermove', function (e) {
+    function onStart(x, y) { swipeX = x; swipeY = y; swipeMoved = false; }
+    function onMove(x, y) {
       if (swipeX == null) return;
-      if (Math.abs(e.clientX - swipeX) > 10 || Math.abs(e.clientY - swipeY) > 10) swipeMoved = true;
-    });
-    el.addEventListener('pointerup', function (e) {
+      if (Math.abs(x - swipeX) > 10 || Math.abs(y - swipeY) > 10) swipeMoved = true;
+    }
+    function onEnd(x, y) {
       if (swipeX == null) return;
-      var dx = e.clientX - swipeX, dy = e.clientY - swipeY;
+      var dx = x - swipeX, dy = y - swipeY;
       swipeX = null;
       if (state.tab !== 'hoje' || state.det) return;
       if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
       var next = state.day + (dx > 0 ? 1 : -1);
       if (next >= 0 && next < DATA.length) setState({ day: next });
-    });
-    el.addEventListener('pointercancel', function () { swipeX = null; });
+    }
+    if ('ontouchstart' in window) {
+      el.addEventListener('touchstart', function (e) { var t = e.touches[0]; onStart(t.clientX, t.clientY); }, { passive: true });
+      el.addEventListener('touchmove', function (e) { var t = e.touches[0]; onMove(t.clientX, t.clientY); }, { passive: true });
+      el.addEventListener('touchend', function (e) { var t = e.changedTouches[0]; onEnd(t.clientX, t.clientY); });
+      el.addEventListener('touchcancel', function () { swipeX = null; });
+    } else {
+      el.addEventListener('pointerdown', function (e) { onStart(e.clientX, e.clientY); });
+      el.addEventListener('pointermove', function (e) { onMove(e.clientX, e.clientY); });
+      el.addEventListener('pointerup', function (e) { onEnd(e.clientX, e.clientY); });
+      el.addEventListener('pointercancel', function () { swipeX = null; });
+    }
   }
 
   function render() {
