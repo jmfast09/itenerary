@@ -77,7 +77,8 @@ textarea{font-family:inherit}
     {label:'Manhã',items:[{k:'spot',n:'Senso-ji (& Matchamon), Nakamise-dori',d:''},{k:'spot',n:'Kaminarimon',d:''}]},
     {label:'Almoço',items:[{k:'food',n:'Udon Shin (Yoyogi)',d:'Zona de Shinjuku. Icónico pelo Carbonara Udon.'}]},
     {label:'Tarde',items:[{k:'spot',n:'Tarde livre / pausa',d:'Inclui deslocação até Shinjuku, ~30 min.'},{k:'spot',n:'Shinjuku Gyoen',d:''}]},
-    {label:'Noite',items:[{k:'spot',n:'Omoide Yokocho',d:''},{k:'spot',n:'Golden Gai',d:''},{k:'food',n:'Teppan Baby Shinjuku',d:'Direto, sem ir ao hotel. Teppanyaki de porção individual, bom para okonomiyaki.'}]}]},
+    {label:'Noite',items:[{k:'spot',n:'Omoide Yokocho',d:''},{k:'spot',n:'Golden Gai',d:''}]},
+    {label:'Jantar',items:[{k:'food',n:'Teppan Baby Shinjuku',d:'Direto, sem ir ao hotel. Teppanyaki de porção individual, bom para okonomiyaki.'}]}]},
    {n:'07',dow:'Domingo',date:'20 set',city:'Kyoto',title:'Checkout e viagem para Kyoto',blocks:[
     {label:'Pequeno-almoço',items:[{t:'9:00',k:'cafe',n:'Tokyo Little House',d:'1 min a pé. Matcha latte + torrada de canela.'}]},
     {label:'Manhã',items:[{k:'hotel',n:'Checkout do Alfit Akasaka',d:''},{t:'12:30',k:'transit',n:'Shinkansen Nozomi 33 → Kyoto',d:'Chegada 14:44. Green, Car.9, Seat 14-A/B.',url:'https://www.google.com/maps/search/?api=1&query=Tokyo%20Station%20Japan'}]},
@@ -253,6 +254,39 @@ textarea{font-family:inherit}
     return changed;
   }
 
+  // Move um item específico para outra secção quando o itinerário original
+  // separa esse item da secção onde estava (ex: tirar uma refeição de
+  // dentro de "Noite" para uma secção "Jantar" própria). Só migra se o item
+  // ainda estiver na secção de origem indicada — se o utilizador já o
+  // tiver movido para outro sítio entretanto, essa escolha é respeitada e
+  // a migração não mexe mais nele. Devolve se mudou algo.
+  var ITEM_BLOCK_MOVES = [{ day: 5, name: 'Teppan Baby Shinjuku', from: 'Noite', to: 'Jantar' }];
+  function syncItemBlocks() {
+    var changed = false;
+    ITEM_BLOCK_MOVES.forEach(function (m) {
+      var day = DATA[m.day];
+      if (!day) return;
+      var fromBlk = null, fromIdx = -1, item = null, itemIdx = -1;
+      day.blocks.forEach(function (b, bi) {
+        if (b.label !== m.from) return;
+        b.items.forEach(function (it, ii) { if (it.n === m.name) { fromBlk = b; fromIdx = bi; item = it; itemIdx = ii; } });
+      });
+      if (!item) return;
+      fromBlk.items.splice(itemIdx, 1);
+      if (!fromBlk.items.length) day.blocks.splice(fromIdx, 1);
+      var toBlk = null;
+      day.blocks.forEach(function (b) { if (b.label === m.to) toBlk = b; });
+      if (!toBlk) {
+        toBlk = { label: m.to, items: [] };
+        day.blocks.push(toBlk);
+        day.blocks.sort(function (a, b) { return BLOCK_ORDER.indexOf(a.label) - BLOCK_ORDER.indexOf(b.label); });
+      }
+      toBlk.items.push(item);
+      changed = true;
+    });
+    return changed;
+  }
+
   // Repara itinerários gravados antes de secções vazias deixarem de ser
   // removidas: volta a criar (vazias) as secções originais que tenham
   // desaparecido por essa razão. Devolve se mudou algo.
@@ -279,9 +313,10 @@ textarea{font-family:inherit}
         persist();
       }
       var changedA = syncItemContent();
+      var changedM = syncItemBlocks();
       var changedR = renameBlocks();
       var changedB = reconcileBlocks();
-      if (changedA || changedR || changedB) persist();
+      if (changedA || changedM || changedR || changedB) persist();
       render();
     }, function (err) {
       console.error('Erro de sincronização do itinerário', err);
