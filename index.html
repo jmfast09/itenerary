@@ -101,7 +101,8 @@ textarea{font-family:inherit}
     {label:'Pequeno-almoço',items:[{t:'9:30',k:'cafe',n:'ROBYN',d:'Em frente ao hotel. Café de bairro. Abre às 9:00.'}]},
     {label:'Manhã',items:[{t:'10:30',k:'hotel',n:'Checkout do Wayfarer Gojo',d:''},{k:'transit',n:'Hotel → Gojo Station → Kyoto Station',d:'A pé 7-10 min + metro Karasuma, 2 min.'},{t:'11:33',k:'transit',n:'Shinkansen Nozomi 137 → Osaka',d:'Car.2, Seat 18-D/E, ¥6.560.'},{k:'spot',n:'Osaka Castle + Nishinomaru Garden',d:''},{t:'15:00',k:'hotel',n:'Check-in no Royal Park Canvas Kitahama',d:'A partir das 15h.'}]},
     {label:'Almoço',items:[{k:'food',n:'Sandwich Parlour 47',d:'Vista para o rio, sandes frescas e limonada caseira.'}]},
-    {label:'Noite',items:[{k:'spot',n:'Dotonbori',d:''},{k:'spot',n:'Hozenji Yokocho',d:''},{k:'spot',n:'Edion Namba',d:''},{k:'spot',n:'Pokémon Center Osaka DX',d:'Daimaru Shinsaibashi.'},{k:'food',n:'Ramen Choro / Dashimaki Sakaba Zerogo / Sushi no Suke Kitahama',d:'Escolher no dia. Ramen Choro: muito popular, considerar reservar.'}]}]},
+    {label:'Tarde',items:[{k:'spot',n:'Dotonbori',d:''},{k:'spot',n:'Hozenji Yokocho',d:''},{k:'spot',n:'Edion Namba',d:''},{k:'spot',n:'Pokémon Center Osaka DX',d:'Daimaru Shinsaibashi.'}]},
+    {label:'Jantar',items:[{k:'food',n:'Ramen Choro / Dashimaki Sakaba Zerogo / Sushi no Suke Kitahama',d:'Escolher no dia. Ramen Choro: muito popular, considerar reservar.'}]}]},
    {n:'11',dow:'Quinta',date:'24 set',city:'Osaka',title:'Universal Studios Japan',blocks:[
     {label:'Pequeno-almoço',items:[{t:'9:00',k:'cafe',n:'Pain Karato',d:'Ao lado do hotel, abre 8h. Boulangerie, sopa, pão.'}]},
     {label:'Manhã',items:[{t:'~25 min',k:'transit',n:'Kitahama → Kyobashi → Nishikujo → Universal City',d:'Keihan + JR Loop + JR Yumesaki, ~25-30 min.'},{t:'10:30',k:'spot',n:'Super Nintendo World',d:'Timed Entry 10:30-11:30 + Mario Kart: Koopa’s Challenge.'},{t:'10:30',k:'spot',n:'Mine Cart Madness',d:'10:30-11:00.'}]},
@@ -235,7 +236,7 @@ textarea{font-family:inherit}
   // lá estavam. Corre antes de reconcileBlocks para não criar uma secção
   // nova vazia com o nome atual em vez de renomear a antiga. Devolve se
   // mudou algo.
-  var BLOCK_RENAMES = [{ day: 1, from: 'Noite', to: 'Jantar' }];
+  var BLOCK_RENAMES = [{ day: 1, from: 'Noite', to: 'Jantar' }, { day: 9, from: 'Noite', to: 'Tarde' }];
   function renameBlocks() {
     var changed = false;
     BLOCK_RENAMES.forEach(function (r) {
@@ -260,7 +261,10 @@ textarea{font-family:inherit}
   // ainda estiver na secção de origem indicada — se o utilizador já o
   // tiver movido para outro sítio entretanto, essa escolha é respeitada e
   // a migração não mexe mais nele. Devolve se mudou algo.
-  var ITEM_BLOCK_MOVES = [{ day: 5, name: 'Teppan Baby Shinjuku', from: 'Noite', to: 'Jantar' }];
+  var ITEM_BLOCK_MOVES = [
+    { day: 5, name: 'Teppan Baby Shinjuku', from: 'Noite', to: 'Jantar' },
+    { day: 9, name: 'Ramen Choro / Dashimaki Sakaba Zerogo / Sushi no Suke Kitahama', from: 'Noite', to: 'Jantar' }
+  ];
   function syncItemBlocks() {
     var changed = false;
     ITEM_BLOCK_MOVES.forEach(function (m) {
