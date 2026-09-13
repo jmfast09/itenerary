@@ -647,11 +647,11 @@ textarea{font-family:inherit}
           html += '<span style="flex:none;width:12px;height:12px;border-radius:999px;margin-top:4px;background:' + it.dot + '"></span>';
           html += '<span style="flex:1;min-width:0"><span style="display:block;font:700 14.5px/1.3 Figtree,system-ui;color:#201e1d">' + esc(it.n) + '</span>';
           html += '<span style="display:block;margin-top:3px;font:400 12.5px/1.45 Figtree,system-ui;color:#645c50">' + esc(it.d) + '</span></span>';
-          if (it.temple) html += TEMPLE_ICON;
           html += '<span style="flex:none;display:flex;flex-direction:column;align-items:center;gap:2px">';
           if (it.t) html += '<span style="font:700 11.5px/1 Figtree,system-ui;color:' + city.deep + ';padding-top:3px">' + esc(it.t) + '</span>';
           html += '<span data-action="drag-handle" data-uid="' + esc(it.uid) + '" aria-label="Arrastar para reordenar" style="width:30px;height:30px;flex:none;touch-action:none"></span>';
           html += '</span>';
+          if (it.temple) html += TEMPLE_ICON;
           html += '</button>';
         });
         html += '</div>';
