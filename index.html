@@ -458,13 +458,13 @@ textarea{font-family:inherit}
         bg: selected ? '#201e1d' : '#ebddc5',
         fg: selected ? '#fff6ef' : '#645c50',
         cardBg: '#ebddc5', cardHi: '#eee7db',
-        idx: i, ticket: false
+        idx: i, ticket: false, current: selected
       };
     });
     if (tab === 'bilhetes') {
       return base.filter(function (d) { return TICKET_DAYS.indexOf(d.n) !== -1; }).map(function (d) {
         var sel = state.tDay === d.n;
-        return Object.assign({}, d, { bg: sel ? '#201e1d' : '#ebddc5', fg: sel ? '#fff6ef' : '#645c50', ticket: true });
+        return Object.assign({}, d, { bg: sel ? '#201e1d' : '#ebddc5', fg: sel ? '#fff6ef' : '#645c50', ticket: true, current: sel });
       });
     }
     return base;
@@ -601,10 +601,10 @@ textarea{font-family:inherit}
     if (searching) html += '<button type="button" data-action="clear-search" style="flex:none;border:0;background:transparent;cursor:pointer;padding:0;font:700 13px/1 Figtree,system-ui;color:' + city.deep + '">×</button>';
     html += '</div></div>';
     html += '<div style="font:500 13.5px/1.35 Figtree,system-ui;color:#645c50">' + esc(day.dow) + ' · ' + esc(day.title) + '</div>';
-    html += '<div style="overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;padding:14px 22px 2px;margin:0 -22px"><div style="width:' + railW + '">';
+    html += '<div id="dayRail" style="overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;padding:14px 22px 2px;margin:0 -22px"><div style="width:' + railW + '">';
     html += '<div style="display:flex;gap:8px">';
     days.forEach(function (d, i) {
-      html += '<button type="button" data-action="pick-day" data-idx="' + i + '" style="flex:none;border:0;cursor:pointer;border-radius:999px;width:36px;height:36px;font:600 12px/1 Figtree,system-ui;background:' + d.bg + ';color:' + d.fg + '">' + esc(d.chip) + '</button>';
+      html += '<button type="button" data-action="pick-day" data-idx="' + i + '"' + (d.current ? ' data-active="1"' : '') + ' style="flex:none;border:0;cursor:pointer;border-radius:999px;width:36px;height:36px;font:600 12px/1 Figtree,system-ui;background:' + d.bg + ';color:' + d.fg + '">' + esc(d.chip) + '</button>';
     });
     html += '</div>';
     if (showBars) {
@@ -776,7 +776,19 @@ textarea{font-family:inherit}
     wireSheetDrag();
     wireSwipe();
     wireItemDrag();
+    scrollDayRailIntoView();
     if (tab === 'mapa' && !searching) renderDayMap(mapStops, city);
+  }
+
+  // Mantém a bolinha do dia atual visível na barra de cima, seguindo o
+  // swipe/troca de dia em vez de ficar parada fora do ecrã.
+  function scrollDayRailIntoView() {
+    var rail = document.getElementById('dayRail');
+    if (!rail) return;
+    var active = rail.querySelector('[data-active="1"]');
+    if (!active) return;
+    var target = active.offsetLeft - (rail.clientWidth / 2) + (active.clientWidth / 2);
+    rail.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
   }
 
   function renderDayMap(stops, city) {
