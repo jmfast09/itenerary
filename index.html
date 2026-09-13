@@ -780,14 +780,16 @@ textarea{font-family:inherit}
     if (tab === 'mapa' && !searching) renderDayMap(mapStops, city);
   }
 
-  // Mantém a bolinha do dia atual visível na barra de cima, seguindo o
-  // swipe/troca de dia em vez de ficar parada fora do ecrã.
+  // Mantém a bolinha do dia atual visível na barra de cima. Só mexe a
+  // barra quando o dia deixa de estar visível (ex: perto do fim da
+  // viagem); caso contrário fica estática, como nos primeiros dias.
   function scrollDayRailIntoView() {
     var rail = document.getElementById('dayRail');
     if (!rail) return;
     var active = rail.querySelector('[data-active="1"]');
     if (!active) return;
-    var target = active.offsetLeft - (rail.clientWidth / 2) + (active.clientWidth / 2);
+    if (active.offsetLeft >= rail.scrollLeft && active.offsetLeft + active.offsetWidth <= rail.scrollLeft + rail.clientWidth) return;
+    var target = active.offsetLeft - (rail.clientWidth / 2) + (active.offsetWidth / 2);
     rail.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
   }
 
