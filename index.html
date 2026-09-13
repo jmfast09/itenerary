@@ -780,17 +780,21 @@ textarea{font-family:inherit}
     if (tab === 'mapa' && !searching) renderDayMap(mapStops, city);
   }
 
-  // Mantém a bolinha do dia atual visível na barra de cima. Só mexe a
-  // barra quando o dia deixa de estar visível (ex: perto do fim da
-  // viagem); caso contrário fica estática, como nos primeiros dias.
+  // Mantém a bolinha do dia atual visível na barra de cima. Cada render
+  // recria o DOM (innerHTML), por isso o dayRail nasce sempre com
+  // scrollLeft 0 — sem isto, qualquer dia que não coubesse nessa vista
+  // inicial disparava uma animação visível em todos os renders. Por isso
+  // posiciona-se instantaneamente (sem animação): fica estática quando o
+  // dia já cabe na vista inicial (0..clientWidth), e só ajusta, sem
+  // efeito de deslize, quando o dia não cabe.
   function scrollDayRailIntoView() {
     var rail = document.getElementById('dayRail');
     if (!rail) return;
     var active = rail.querySelector('[data-active="1"]');
     if (!active) return;
-    if (active.offsetLeft >= rail.scrollLeft && active.offsetLeft + active.offsetWidth <= rail.scrollLeft + rail.clientWidth) return;
+    if (active.offsetLeft >= 0 && active.offsetLeft + active.offsetWidth <= rail.clientWidth) return;
     var target = active.offsetLeft - (rail.clientWidth / 2) + (active.offsetWidth / 2);
-    rail.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
+    rail.scrollLeft = Math.max(0, target);
   }
 
   function renderDayMap(stops, city) {
