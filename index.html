@@ -56,7 +56,7 @@ textarea{font-family:inherit}
     {label:'Jantar',items:[{k:'spot',n:'Shibuya Crossing',d:''},{k:'spot',n:'Hachiko',d:''},{k:'spot',n:'Pôr do sol no Hikarie Sky Lobby',d:''},{k:'food',n:'Afuri Ramen (Shibuya)',d:'Direto, sem ir ao hotel. Yuzu Shio Ramen — caldo leve com toque cítrico; tem Tsukemen.'}]}]},
    {n:'03',dow:'Quarta',date:'16 set',city:'Kamakura',title:'Day trip a Kamakura',blocks:[
     {label:'Pequeno-almoço',items:[{k:'cafe',n:'Rokumei Coffee Co.',d:'Dentro da Tokyo Station. Especialidade torrado na hora, conhecido pelo pour-over.'}]},
-    {label:'Manhã',items:[{t:'~57 min',k:'transit',n:'Tokyo Station → Kamakura (JR Yokosuka Line)',d:'',url:'https://www.google.com/maps/search/?api=1&query=Tokyo%20Station%20Japan'},{k:'spot',n:'Kotoku-in (Grande Buda)',d:''},{k:'spot',n:'Hase-dera Temple',d:''}]},
+    {label:'Manhã',items:[{t:'~57 min',k:'transit',n:'Tokyo Station → Kamakura (JR Yokosuka Line)',d:'',url:'https://www.google.com/maps/search/?api=1&query=Tokyo%20Station%20Japan'},{k:'spot',n:'Kotoku-in (Grande Buda)',d:'',temple:true},{k:'spot',n:'Hase-dera Temple',d:'',temple:true}]},
     {label:'Almoço',items:[{k:'food',n:'Kaedena',d:'Donabe gohan (arroz em claypot) com 7 acompanhamentos.'}]},
     {label:'Tarde',items:[{k:'spot',n:'Tsurugaoka Hachimangu Shrine',d:''},{k:'spot',n:'Yuigahama Beach',d:'Extra, se sobrar tempo.'}]},
     {label:'Jantar',items:[{k:'food',n:'Tonkatsu Aoki Akasaka',d:'A 1 min a pé do hotel.'}]}]},
@@ -74,7 +74,7 @@ textarea{font-family:inherit}
     {label:'Jantar',items:[{t:'20:30',k:'food',n:'Sabasu (Pizza)',d:'RESERVADO. 7 min a pé do hotel. Só possível com reserva antecipada.'}]}]},
    {n:'06',dow:'Sábado',date:'19 set',city:'Tóquio',title:'Asakusa & Shinjuku',blocks:[
     {label:'Pequeno-almoço',items:[{k:'cafe',n:'UESHIMA COFFEE LOUNGE',d:'~10 min a pé. Café clássico japonês; toast set, French toast.',url:'https://maps.app.goo.gl/QHxG5UNHu5J5bKG77?g_st=aw'}]},
-    {label:'Manhã',items:[{k:'spot',n:'Senso-ji (& Matchamon), Nakamise-dori',d:''},{k:'spot',n:'Kaminarimon',d:''}]},
+    {label:'Manhã',items:[{k:'spot',n:'Senso-ji (& Matchamon), Nakamise-dori',d:'',temple:true},{k:'spot',n:'Kaminarimon',d:''}]},
     {label:'Almoço',items:[{k:'food',n:'Udon Shin (Yoyogi)',d:'Zona de Shinjuku. Icónico pelo Carbonara Udon.'}]},
     {label:'Tarde',items:[{k:'spot',n:'Tarde livre / pausa',d:'Inclui deslocação até Shinjuku, ~30 min.'},{k:'spot',n:'Shinjuku Gyoen',d:''}]},
     {label:'Noite',items:[{k:'spot',n:'Omoide Yokocho',d:''},{k:'spot',n:'Golden Gai',d:''}]},
@@ -87,15 +87,15 @@ textarea{font-family:inherit}
     {label:'Noite',items:[{k:'spot',n:'Pontocho Alley e Gion',d:''},{t:'21:00',k:'food',n:'Gion Nikutei Shin',d:'RESERVADO. Omi beef. Counter course com arroz em claypot.'}]}]},
    {n:'08',dow:'Segunda',date:'21 set',city:'Kyoto',title:'Higashiyama (Silver Week)',blocks:[
     {label:'Pequeno-almoço',items:[{k:'cafe',n:'Cafe KANO (Shimogyo)',d:'Entre hotel e Kiyomizu-Gojo Station. Cinnamon toast, egg toast, Italian toast.'}]},
-    {label:'Manhã',items:[{t:'7 min',k:'transit',n:'Hotel → Kiyomizu-Gojo Station → Fushimi Inari',d:'Keihan Main Line, 4-5 min.'},{k:'spot',n:'Fushimi Inari Taisha',d:''},{k:'spot',n:'Kiyomizu-dera',d:''}]},
+    {label:'Manhã',items:[{t:'7 min',k:'transit',n:'Hotel → Kiyomizu-Gojo Station → Fushimi Inari',d:'Keihan Main Line, 4-5 min.'},{k:'spot',n:'Fushimi Inari Taisha',d:''},{k:'spot',n:'Kiyomizu-dera',d:'',temple:true}]},
     {label:'Almoço',items:[{k:'food',n:'Koyori / Kyoto Wagyu Steak Sandwich / Kishi Zushi',d:'Koyori: opção principal, cash only, chef único, só 2 sets de menu.'}]},
-    {label:'Tarde',items:[{k:'spot',n:'Ninenzaka',d:''},{k:'spot',n:'Sannenzaka',d:''},{k:'spot',n:'Kenninji Temple',d:''},{k:'spot',n:'Shirakawa Canal (Gion)',d:'Ao entardecer.'}]},
+    {label:'Tarde',items:[{k:'spot',n:'Ninenzaka',d:''},{k:'spot',n:'Sannenzaka',d:''},{k:'spot',n:'Kenninji Temple',d:'',temple:true},{k:'spot',n:'Shirakawa Canal (Gion)',d:'Ao entardecer.'}]},
     {label:'Jantar',items:[{k:'food',n:'Gyoza Hohei (Gion)',d:'Direto, sem ir ao hotel. Gyoza grelhados finos. Muito concorrido, ir cedo — não aceita reservas.',url:'https://maps.app.goo.gl/X8zjLfQWdMWajhH36?g_st=aw'}]}]},
    {n:'09',dow:'Terça',date:'22 set',city:'Kyoto',title:'Arashiyama + Kinkaku-ji',blocks:[
     {label:'Pequeno-almoço',items:[{k:'cafe',n:'Sakura Cafe Hanon / Matcha Cafe Hanon',d:'Perto de Kyoto-Kawaramachi. Fluffy pancakes. Chegar cedo — não aceita reservas de manhã.'}]},
-    {label:'Manhã',items:[{k:'spot',n:'Arashiyama Bamboo Forest',d:''},{k:'spot',n:'Tenryu-ji Temple',d:''}]},
+    {label:'Manhã',items:[{k:'spot',n:'Arashiyama Bamboo Forest',d:''},{k:'spot',n:'Tenryu-ji Temple',d:'',temple:true}]},
     {label:'Almoço',items:[{k:'food',n:'Arashiyama Yoshimura',d:''}]},
-    {label:'Tarde',items:[{t:'~25 min',k:'spot',n:'Kinkaku-ji',d:'~25-30 min de Arashiyama.'}]},
+    {label:'Tarde',items:[{t:'~25 min',k:'spot',n:'Kinkaku-ji',d:'~25-30 min de Arashiyama.',temple:true}]},
     {label:'Jantar',items:[{k:'food',n:'Musashi Sushi (Teramachi/Sanjo)',d:'Conveyor belt sushi. Aberto todos os dias 11:00–22:00.',url:'https://maps.app.goo.gl/MRKwFNQNxkZQ7HNy9?g_st=aw'}]}]},
    {n:'10',dow:'Quarta',date:'23 set',city:'Osaka',title:'Viagem para Osaka + Dotonbori',blocks:[
     {label:'Pequeno-almoço',items:[{t:'9:30',k:'cafe',n:'ROBYN',d:'Em frente ao hotel. Café de bairro. Abre às 9:00.'}]},
@@ -137,6 +137,8 @@ textarea{font-family:inherit}
   var TICKET_DAYS = ['07','10','11','12'];
   var TICKET_MAP = { '07':['20 set'], '10':['23 set'], '11':['24 set'], '12':['25 set','26 set'] };
   var BLOCK_ORDER = ['Pequeno-almoço','Manhã','Manhã/Tarde','Almoço','Tarde','Fim de tarde','Tarde/Noite','Noite','Jantar'];
+
+  var TEMPLE_ICON = '<svg width="56" height="56" viewBox="0 0 100 100" fill="none" stroke="#b0a48c" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M50 6v11"></path><ellipse cx="50" cy="19" rx="5.5" ry="3"></ellipse><path d="M16 36q17-12 34-6q17-6 34 6q-17 8-34 6q-17 2-34-6Z"></path><path d="M31 36v11M69 36v11"></path><path d="M10 60q20-14 40-6q20-8 40 6q-20 9-40 6q-20 3-40-6Z"></path><path d="M25 60v29M75 60v29"></path><path d="M39 76q11-7 22 0v13H39Z"></path><path d="M17 89h66"></path></svg>';
 
   // Nome do sítio → termo de pesquisa utilizável: primeira opção de uma lista,
   // destino final de um percurso, sem prefixos de check-in nem parênteses.
@@ -221,8 +223,8 @@ textarea{font-family:inherit}
         b.items.forEach(function (it) {
           var seed = SEED_LOOKUP[it.uid];
           if (!seed) return;
-          if (it.n !== seed.n || (it.d || '') !== (seed.d || '') || (it.t || '') !== (seed.t || '') || it.k !== seed.k || (it.url || '') !== (seed.url || '')) {
-            it.n = seed.n; it.d = seed.d; it.t = seed.t; it.k = seed.k; it.url = seed.url;
+          if (it.n !== seed.n || (it.d || '') !== (seed.d || '') || (it.t || '') !== (seed.t || '') || it.k !== seed.k || (it.url || '') !== (seed.url || '') || !it.temple !== !seed.temple) {
+            it.n = seed.n; it.d = seed.d; it.t = seed.t; it.k = seed.k; it.url = seed.url; it.temple = seed.temple;
             changed = true;
           }
         });
@@ -644,6 +646,7 @@ textarea{font-family:inherit}
           html += '<span style="flex:none;width:12px;height:12px;border-radius:999px;margin-top:4px;background:' + it.dot + '"></span>';
           html += '<span style="flex:1;min-width:0"><span style="display:block;font:700 14.5px/1.3 Figtree,system-ui;color:#201e1d">' + esc(it.n) + '</span>';
           html += '<span style="display:block;margin-top:3px;font:400 12.5px/1.45 Figtree,system-ui;color:#645c50">' + esc(it.d) + '</span></span>';
+          if (it.temple) html += TEMPLE_ICON;
           html += '<span style="flex:none;display:flex;flex-direction:column;align-items:center;gap:2px">';
           if (it.t) html += '<span style="font:700 11.5px/1 Figtree,system-ui;color:' + city.deep + ';padding-top:3px">' + esc(it.t) + '</span>';
           html += '<span data-action="drag-handle" data-uid="' + esc(it.uid) + '" aria-label="Arrastar para reordenar" style="width:30px;height:30px;flex:none;touch-action:none"></span>';
