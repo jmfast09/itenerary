@@ -436,7 +436,17 @@ textarea{font-family:inherit}
     return p;
   }
 
-  var state = { tab: 'hoje', day: 0, det: null, q: '', sheetY: 0, tDay: null, undo: null };
+  // Abre a app já no dia atual: antes da viagem mostra o dia 1, durante
+  // mostra o dia correspondente, depois mostra o último dia.
+  function todayDayIndex() {
+    var now = new Date();
+    var todayISO = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+    var idx = ISO.indexOf(todayISO);
+    if (idx !== -1) return idx;
+    if (todayISO < ISO[0]) return 0;
+    return ISO.length - 1;
+  }
+  var state = { tab: 'hoje', day: todayDayIndex(), det: null, q: '', sheetY: 0, tDay: null, undo: null };
   var live = { days: [], tabs: [], nextUid: null };
   var mapInstance = null;
   var mapToken = 0;
