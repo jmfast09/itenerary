@@ -210,8 +210,14 @@ textarea{font-family:inherit}
 
   function persist() {
     if (!SYNC_DOC) return;
-    SYNC_DOC.set({ days: DATA, updatedAt: firebase.firestore.FieldValue.serverTimestamp() })
-      .catch(function (e) { console.error('Falha ao sincronizar itinerário', e); });
+    // O Firestore rejeita (lança de forma síncrona) qualquer campo com
+    // valor undefined. JSON.stringify/parse remove esses campos, para uma
+    // alteração futura não voltar a quebrar a gravação silenciosamente.
+    var clean = JSON.parse(JSON.stringify(DATA));
+    try {
+      SYNC_DOC.set({ days: clean, updatedAt: firebase.firestore.FieldValue.serverTimestamp() })
+        .catch(function (e) { console.error('Falha ao sincronizar itinerário', e); });
+    } catch (e) { console.error('Falha ao sincronizar itinerário', e); }
   }
 
   // Atualiza nome/descrição/hora/tipo de itens já gravados para acompanhar
@@ -225,7 +231,10 @@ textarea{font-family:inherit}
           var seed = SEED_LOOKUP[it.uid];
           if (!seed) return;
           if (it.n !== seed.n || (it.d || '') !== (seed.d || '') || (it.t || '') !== (seed.t || '') || it.k !== seed.k || (it.url || '') !== (seed.url || '') || !it.temple !== !seed.temple) {
-            it.n = seed.n; it.d = seed.d; it.t = seed.t; it.k = seed.k; it.url = seed.url; it.temple = seed.temple;
+            it.n = seed.n; it.d = seed.d; it.k = seed.k;
+            if (seed.t) it.t = seed.t; else delete it.t;
+            if (seed.url) it.url = seed.url; else delete it.url;
+            if (seed.temple) it.temple = true; else delete it.temple;
             changed = true;
           }
         });
