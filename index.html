@@ -511,13 +511,32 @@ textarea{font-family:inherit}
     }
     var next = flat[0] || {}, label = 'Primeiro do dia';
     if (todayIdx === di) {
-      var upcoming = flat.find(function (it) { var m = toMin(it.t); return m !== null && m > mins; });
       var h = now.getHours();
       var period = h < 10 ? 'Pequeno-almoço' : h < 12 ? 'Manhã' : h < 15 ? 'Almoço' : h < 18.5 ? 'Tarde' : 'Jantar';
-      var blk = blocks.find(function (b) { return b.label === period; }) || blocks.find(function (b) { return b.label === 'Noite'; });
-      if (upcoming) { next = upcoming; label = 'A seguir · ' + upcoming.t; }
-      else if (blk && blk.items.length) { next = blk.items[0]; label = 'Agora · ' + blk.label.toLowerCase(); }
-      else { next = flat[flat.length - 1] || next; label = 'Último do dia'; }
+      var periodPos = BLOCK_ORDER.indexOf(period);
+      // Percorre os blocos pela ordem do dia (não pela ordem de leitura do
+      // texto): um item sem hora marcada só conta como "já passado" se o
+      // seu bloco (manhã/almoço/tarde/...) já tiver ficado para trás do
+      // período atual — caso contrário fica disponível como "a seguir",
+      // em vez de saltar logo para o primeiro item com hora marcada (que
+      // normalmente é só o jantar).
+      var found = null, foundBlk = null;
+      for (var bi = 0; bi < blocks.length && !found; bi++) {
+        var b = blocks[bi];
+        var bPos = BLOCK_ORDER.indexOf(b.label);
+        for (var ii = 0; ii < b.items.length; ii++) {
+          var it = b.items[ii];
+          var m = toMin(it.t);
+          var passed = m !== null ? m <= mins : bPos < periodPos;
+          if (!passed) { found = it; foundBlk = b; break; }
+        }
+      }
+      if (found) {
+        next = found;
+        label = toMin(found.t) !== null ? ('A seguir · ' + found.t) : ('Agora · ' + foundBlk.label.toLowerCase());
+      } else {
+        next = flat[flat.length - 1] || next; label = 'Último do dia';
+      }
     } else if (todayIdx === -1) {
       var dd = Math.round((new Date(ISO[di]) - new Date(todayISO)) / 86400000);
       label = dd > 0 ? 'Faltam ' + dd + ' dias · começa por' : 'Primeiro do dia';
