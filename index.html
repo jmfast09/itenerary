@@ -101,7 +101,7 @@ textarea{font-family:inherit}
     {label:'Pequeno-almoço',items:[{t:'9:30',k:'cafe',n:'ROBYN',d:'Em frente ao hotel. Café de bairro. Abre às 9:00.'}]},
     {label:'Manhã',items:[{t:'10:30',k:'hotel',n:'Checkout do Wayfarer Gojo',d:''},{k:'transit',n:'Hotel → Gojo Station → Kyoto Station',d:'A pé 7-10 min + metro Karasuma, 2 min.'},{t:'11:33',k:'transit',n:'Shinkansen Nozomi 137 → Osaka',d:'Car.2, Seat 18-D/E, ¥6.560.'},{k:'spot',n:'Osaka Castle + Nishinomaru Garden',d:''},{t:'15:00',k:'hotel',n:'Check-in no Royal Park Canvas Kitahama',d:'A partir das 15h.'}]},
     {label:'Almoço',items:[{k:'food',n:'Sandwich Parlour 47',d:'Vista para o rio, sandes frescas e limonada caseira.'}]},
-    {label:'Tarde',items:[{k:'spot',n:'Dotonbori',d:''},{k:'spot',n:'Hozenji Yokocho',d:''},{k:'spot',n:'Edion Namba',d:''},{k:'spot',n:'Pokémon Center Osaka DX',d:'Daimaru Shinsaibashi.'}]},
+    {label:'Tarde',items:[{k:'cafe',n:'Café no Chaniwa',d:'',url:'https://maps.app.goo.gl/T65wxPsf4pYVgjkn6?g_st=ac'},{k:'spot',n:'Dotonbori',d:''},{k:'spot',n:'Hozenji Yokocho',d:''},{k:'spot',n:'Edion Namba',d:''},{k:'spot',n:'Pokémon Center Osaka DX',d:'Daimaru Shinsaibashi.'}]},
     {label:'Jantar',items:[{k:'food',n:'Ramen Choro / Dashimaki Sakaba Zerogo / Sushi no Suke Kitahama',d:'Escolher no dia. Ramen Choro: muito popular, considerar reservar.'}]}]},
    {n:'11',dow:'Quinta',date:'24 set',city:'Osaka',title:'Universal Studios Japan',blocks:[
     {label:'Pequeno-almoço',items:[{t:'9:00',k:'cafe',n:'Pain Karato',d:'Ao lado do hotel, abre 8h. Boulangerie, sopa, pão.'}]},
@@ -202,9 +202,13 @@ textarea{font-family:inherit}
   }
   var DATA = seedData();
   var SEED_LOOKUP = {};
-  DATA.forEach(function (day) {
+  var SEED_BY_KEY = {};
+  DATA.forEach(function (day, di) {
     day.blocks.forEach(function (b) {
-      b.items.forEach(function (it) { SEED_LOOKUP[it.uid] = it; });
+      b.items.forEach(function (it) {
+        SEED_LOOKUP[it.uid] = it;
+        SEED_BY_KEY[di + '|' + b.label + '|' + it.n] = it;
+      });
     });
   });
 
@@ -320,6 +324,36 @@ textarea{font-family:inherit}
     return changed;
   }
 
+  // Insere itens novos adicionados ao itinerário original em dias/secções
+  // já sincronizados, que de outra forma nunca apareceriam para quem já
+  // tem dados gravados. Casa pelo nome dentro da secção (evita duplicar);
+  // usa o item já semeado (mesmo uid) para syncItemContent continuar a
+  // conseguir sincronizar futuras correções a este item. Devolve se mudou.
+  var NEW_ITEMS = [
+    { day: 9, block: 'Tarde', beforeName: 'Dotonbori', name: 'Café no Chaniwa' }
+  ];
+  function syncNewItems() {
+    var changed = false;
+    NEW_ITEMS.forEach(function (spec) {
+      var day = DATA[spec.day];
+      if (!day) return;
+      var blk = null;
+      day.blocks.forEach(function (b) { if (b.label === spec.block) blk = b; });
+      if (!blk) return;
+      if (blk.items.some(function (it) { return it.n === spec.name; })) return;
+      var seed = SEED_BY_KEY[spec.day + '|' + spec.block + '|' + spec.name];
+      if (!seed) return;
+      var insertAt = blk.items.length;
+      if (spec.beforeName) {
+        var idx = blk.items.findIndex(function (it) { return it.n === spec.beforeName; });
+        if (idx !== -1) insertAt = idx;
+      }
+      blk.items.splice(insertAt, 0, Object.assign({}, seed));
+      changed = true;
+    });
+    return changed;
+  }
+
   if (SYNC_DOC) {
     SYNC_DOC.onSnapshot(function (snap) {
       if (snap.exists) {
@@ -332,7 +366,8 @@ textarea{font-family:inherit}
       var changedM = syncItemBlocks();
       var changedR = renameBlocks();
       var changedB = reconcileBlocks();
-      if (changedA || changedM || changedR || changedB) persist();
+      var changedN = syncNewItems();
+      if (changedA || changedM || changedR || changedB || changedN) persist();
       render();
     }, function (err) {
       console.error('Erro de sincronização do itinerário', err);
