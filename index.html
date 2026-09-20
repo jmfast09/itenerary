@@ -96,12 +96,12 @@ textarea{font-family:inherit}
     {label:'Manhã',items:[{k:'spot',n:'Arashiyama Bamboo Forest',d:''},{k:'spot',n:'Tenryu-ji Temple',d:'',temple:true}]},
     {label:'Almoço',items:[{k:'food',n:'Arashiyama Yoshimura',d:''}]},
     {label:'Tarde',items:[{t:'~25 min',k:'spot',n:'Kinkaku-ji',d:'~25-30 min de Arashiyama.',temple:true}]},
-    {label:'Jantar',items:[{t:'19:00',k:'cafe',n:'Dog Cafe Rio',d:'RESERVADO.'},{k:'food',n:'Musashi Sushi (Teramachi/Sanjo)',d:'Conveyor belt sushi. Aberto todos os dias 11:00–22:00.',url:'https://maps.app.goo.gl/MRKwFNQNxkZQ7HNy9?g_st=aw'}]}]},
+    {label:'Jantar',items:[{uid:'udogcaferio22set',t:'19:00',k:'cafe',n:'Dog Cafe Rio',d:'RESERVADO.'},{k:'food',n:'Musashi Sushi (Teramachi/Sanjo)',d:'Conveyor belt sushi. Aberto todos os dias 11:00–22:00.',url:'https://maps.app.goo.gl/MRKwFNQNxkZQ7HNy9?g_st=aw'}]}]},
    {n:'10',dow:'Quarta',date:'23 set',city:'Osaka',title:'Viagem para Osaka + Dotonbori',blocks:[
     {label:'Pequeno-almoço',items:[{t:'9:30',k:'cafe',n:'ROBYN',d:'Em frente ao hotel. Café de bairro. Abre às 9:00.'}]},
     {label:'Manhã',items:[{t:'10:30',k:'hotel',n:'Checkout do Wayfarer Gojo',d:''},{k:'transit',n:'Hotel → Gojo Station → Kyoto Station',d:'A pé 7-10 min + metro Karasuma, 2 min.'},{t:'11:33',k:'transit',n:'Shinkansen Nozomi 137 → Osaka',d:'Car.2, Seat 18-D/E, ¥6.560.'},{k:'spot',n:'Osaka Castle + Nishinomaru Garden',d:''},{t:'15:00',k:'hotel',n:'Check-in no Royal Park Canvas Kitahama',d:'A partir das 15h.'}]},
     {label:'Almoço',items:[{k:'food',n:'Sandwich Parlour 47',d:'Vista para o rio, sandes frescas e limonada caseira.'}]},
-    {label:'Tarde',items:[{k:'cafe',n:'Café no Chaniwa',d:'',url:'https://maps.app.goo.gl/T65wxPsf4pYVgjkn6?g_st=ac'},{k:'spot',n:'Dotonbori',d:''},{k:'spot',n:'Hozenji Yokocho',d:''},{k:'spot',n:'Edion Namba',d:''},{k:'spot',n:'Pokémon Center Osaka DX',d:'Daimaru Shinsaibashi.'}]},
+    {label:'Tarde',items:[{uid:'ucafechaniwa23set',k:'cafe',n:'Café no Chaniwa',d:'',url:'https://maps.app.goo.gl/T65wxPsf4pYVgjkn6?g_st=ac'},{k:'spot',n:'Dotonbori',d:''},{k:'spot',n:'Hozenji Yokocho',d:''},{k:'spot',n:'Edion Namba',d:''},{k:'spot',n:'Pokémon Center Osaka DX',d:'Daimaru Shinsaibashi.'}]},
     {label:'Jantar',items:[{k:'food',n:'Ramen Choro / Dashimaki Sakaba Zerogo / Sushi no Suke Kitahama',d:'Escolher no dia. Ramen Choro: muito popular, considerar reservar.'}]}]},
    {n:'11',dow:'Quinta',date:'24 set',city:'Osaka',title:'Universal Studios Japan',blocks:[
     {label:'Pequeno-almoço',items:[{t:'8:30',k:'cafe',n:'MAZE CAFE BRUNCH LOUNGE',d:'Perto do hotel. French toast, eggs Benedict.'}]},
@@ -188,13 +188,20 @@ textarea{font-family:inherit}
     SYNC_DOC = db.collection('itineraries').doc('3cdc7402b7f7ca83948c6ecc0b4ce1f6');
   } catch (e) {}
 
+  // uidCounter atribui uids por ordem de leitura do DAYS. Qualquer item
+  // inserido no MEIO do array (não no fim) desloca essa contagem e faz
+  // colidir com uids já persistidos de itens seguintes — corrompendo-os
+  // via syncItemContent (o item errado passa a "corresponder" ao uid).
+  // Por isso, todo o item novo inserido no meio de um dia/secção já
+  // existente TEM de levar um uid fixo explícito no próprio DAYS (ver
+  // 'Café no Chaniwa' e 'Dog Cafe Rio'), para não consumir a contagem.
   var uidCounter = 0;
   function seedData() {
     return DAYS.map(function (d) {
       return Object.assign({}, d, {
         blocks: d.blocks.map(function (b) {
           return Object.assign({}, b, {
-            items: b.items.map(function (it) { return Object.assign({}, it, { uid: 'u' + (++uidCounter), note: '' }); })
+            items: b.items.map(function (it) { return Object.assign({}, it, { uid: it.uid || ('u' + (++uidCounter)), note: '' }); })
           });
         })
       });
