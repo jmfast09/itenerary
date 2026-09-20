@@ -96,7 +96,7 @@ textarea{font-family:inherit}
     {label:'Manhã',items:[{k:'spot',n:'Arashiyama Bamboo Forest',d:''},{k:'spot',n:'Tenryu-ji Temple',d:'',temple:true}]},
     {label:'Almoço',items:[{k:'food',n:'Arashiyama Yoshimura',d:''}]},
     {label:'Tarde',items:[{t:'~25 min',k:'spot',n:'Kinkaku-ji',d:'~25-30 min de Arashiyama.',temple:true}]},
-    {label:'Jantar',items:[{k:'food',n:'Musashi Sushi (Teramachi/Sanjo)',d:'Conveyor belt sushi. Aberto todos os dias 11:00–22:00.',url:'https://maps.app.goo.gl/MRKwFNQNxkZQ7HNy9?g_st=aw'}]}]},
+    {label:'Jantar',items:[{t:'19:00',k:'cafe',n:'Dog Cafe Rio',d:'RESERVADO.'},{k:'food',n:'Musashi Sushi (Teramachi/Sanjo)',d:'Conveyor belt sushi. Aberto todos os dias 11:00–22:00.',url:'https://maps.app.goo.gl/MRKwFNQNxkZQ7HNy9?g_st=aw'}]}]},
    {n:'10',dow:'Quarta',date:'23 set',city:'Osaka',title:'Viagem para Osaka + Dotonbori',blocks:[
     {label:'Pequeno-almoço',items:[{t:'9:30',k:'cafe',n:'ROBYN',d:'Em frente ao hotel. Café de bairro. Abre às 9:00.'}]},
     {label:'Manhã',items:[{t:'10:30',k:'hotel',n:'Checkout do Wayfarer Gojo',d:''},{k:'transit',n:'Hotel → Gojo Station → Kyoto Station',d:'A pé 7-10 min + metro Karasuma, 2 min.'},{t:'11:33',k:'transit',n:'Shinkansen Nozomi 137 → Osaka',d:'Car.2, Seat 18-D/E, ¥6.560.'},{k:'spot',n:'Osaka Castle + Nishinomaru Garden',d:''},{t:'15:00',k:'hotel',n:'Check-in no Royal Park Canvas Kitahama',d:'A partir das 15h.'}]},
@@ -330,7 +330,8 @@ textarea{font-family:inherit}
   // usa o item já semeado (mesmo uid) para syncItemContent continuar a
   // conseguir sincronizar futuras correções a este item. Devolve se mudou.
   var NEW_ITEMS = [
-    { day: 9, block: 'Tarde', beforeName: 'Dotonbori', name: 'Café no Chaniwa' }
+    { day: 9, block: 'Tarde', beforeName: 'Dotonbori', name: 'Café no Chaniwa' },
+    { day: 8, block: 'Jantar', beforeName: 'Musashi Sushi (Teramachi/Sanjo)', name: 'Dog Cafe Rio' }
   ];
   function syncNewItems() {
     var changed = false;
