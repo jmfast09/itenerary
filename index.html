@@ -345,12 +345,16 @@ textarea{font-family:inherit}
     NEW_ITEMS.forEach(function (spec) {
       var day = DATA[spec.day];
       if (!day) return;
+      var seed = SEED_BY_KEY[spec.day + '|' + spec.block + '|' + spec.name];
+      if (!seed) return;
+      // Procura pelo uid em todo o dia, não só no bloco de origem: se o
+      // utilizador já moveu este item para outro bloco (drag and drop),
+      // continua a contar como "já inserido" e não duplica lá.
+      var existsAnywhere = day.blocks.some(function (b) { return b.items.some(function (it) { return it.uid === seed.uid; }); });
+      if (existsAnywhere) return;
       var blk = null;
       day.blocks.forEach(function (b) { if (b.label === spec.block) blk = b; });
       if (!blk) return;
-      if (blk.items.some(function (it) { return it.n === spec.name; })) return;
-      var seed = SEED_BY_KEY[spec.day + '|' + spec.block + '|' + spec.name];
-      if (!seed) return;
       var insertAt = blk.items.length;
       if (spec.beforeName) {
         var idx = blk.items.findIndex(function (it) { return it.n === spec.beforeName; });
@@ -358,6 +362,25 @@ textarea{font-family:inherit}
       }
       blk.items.splice(insertAt, 0, Object.assign({}, seed));
       changed = true;
+    });
+    return changed;
+  }
+
+  // Repara duplicados que possam ter ficado gravados (ex: um item movido
+  // pelo utilizador para outro bloco antes desta correção, que entretanto
+  // voltou a ser inserido no bloco de origem por syncNewItems). Mantém a
+  // primeira ocorrência de cada uid por dia e remove as seguintes.
+  function dedupeItems() {
+    var changed = false;
+    DATA.forEach(function (day) {
+      var seen = {};
+      day.blocks.forEach(function (b) {
+        b.items = b.items.filter(function (it) {
+          if (seen[it.uid]) { changed = true; return false; }
+          seen[it.uid] = true;
+          return true;
+        });
+      });
     });
     return changed;
   }
@@ -370,12 +393,13 @@ textarea{font-family:inherit}
       } else {
         persist();
       }
+      var changedD = dedupeItems();
       var changedA = syncItemContent();
       var changedM = syncItemBlocks();
       var changedR = renameBlocks();
       var changedB = reconcileBlocks();
       var changedN = syncNewItems();
-      if (changedA || changedM || changedR || changedB || changedN) persist();
+      if (changedD || changedA || changedM || changedR || changedB || changedN) persist();
       render();
     }, function (err) {
       console.error('Erro de sincronização do itinerário', err);
