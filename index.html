@@ -44,77 +44,77 @@ textarea{font-family:inherit}
 
   var DAYS = [
    {n:'01',dow:'Segunda',date:'14 set',city:'Tóquio',title:'Chegada 13:30',blocks:[
-    {label:'Manhã',items:[{t:'13:30',k:'hotel',n:'Check-in no Alfit Hotel & Bar Akasaka',d:'Base em Akasaka para as noites de 14 a 20.'}]},
-    {label:'Almoço',items:[{k:'food',n:'Sushi Mon Ieyasu',d:'Aberto todos os dias 11:30–23:00.'}]},
-    {label:'Tarde',items:[{k:'spot',n:'Hie Shrine',d:'Caminhada leve, 10 min a pé.'}]},
-    {label:'Jantar',items:[{k:'food',n:'Sushi No Midori / Izakaya Sanzoku / Kisurin / Sushi Itsumi / Ramen Hisui',d:'Opções favoráveis perto do hotel — escolher no dia.'}]}]},
+    {label:'Manhã',items:[{uid:'u1',t:'13:30',k:'hotel',n:'Check-in no Alfit Hotel & Bar Akasaka',d:'Base em Akasaka para as noites de 14 a 20.'}]},
+    {label:'Almoço',items:[{uid:'u2',k:'food',n:'Sushi Mon Ieyasu',d:'Aberto todos os dias 11:30–23:00.'}]},
+    {label:'Tarde',items:[{uid:'u3',k:'spot',n:'Hie Shrine',d:'Caminhada leve, 10 min a pé.'}]},
+    {label:'Jantar',items:[{uid:'u4',k:'food',n:'Sushi No Midori / Izakaya Sanzoku / Kisurin / Sushi Itsumi / Ramen Hisui',d:'Opções favoráveis perto do hotel — escolher no dia.'}]}]},
    {n:'02',dow:'Terça',date:'15 set',city:'Tóquio',title:'Harajuku, Shibuya & Omotesando',blocks:[
-    {label:'Pequeno-almoço',items:[{k:'cafe',n:'bills Omotesando',d:'Ricotta hotcakes com avocado toast e ovo escalfado. ~15 min de metro.'}]},
-    {label:'Manhã',items:[{k:'spot',n:'Meiji Jingu',d:''},{k:'spot',n:'Yoyogi Park',d:''}]},
-    {label:'Almoço',items:[{k:'food',n:'Tenkazushi Shibuya Dogenzaka',d:'Conveyor belt sushi. Aberto todos os dias 11:00–21:30.'}]},
-    {label:'Tarde',items:[{k:'spot',n:'Takeshita Street',d:''},{k:'spot',n:'Omotesando',d:''},{k:'spot',n:'Pokémon Center Shibuya + Bic Camera + Don Quijote',d:'Shibuya Parco, 6F.'}]},
-    {label:'Jantar',items:[{k:'spot',n:'Shibuya Crossing',d:''},{k:'spot',n:'Hachiko',d:''},{k:'spot',n:'Pôr do sol no Hikarie Sky Lobby',d:''},{k:'food',n:'Afuri Ramen (Shibuya)',d:'Direto, sem ir ao hotel. Yuzu Shio Ramen — caldo leve com toque cítrico; tem Tsukemen.'}]}]},
+    {label:'Pequeno-almoço',items:[{uid:'u5',k:'cafe',n:'bills Omotesando',d:'Ricotta hotcakes com avocado toast e ovo escalfado. ~15 min de metro.'}]},
+    {label:'Manhã',items:[{uid:'u6',k:'spot',n:'Meiji Jingu',d:''},{uid:'u7',k:'spot',n:'Yoyogi Park',d:''}]},
+    {label:'Almoço',items:[{uid:'u8',k:'food',n:'Tenkazushi Shibuya Dogenzaka',d:'Conveyor belt sushi. Aberto todos os dias 11:00–21:30.'}]},
+    {label:'Tarde',items:[{uid:'u9',k:'spot',n:'Takeshita Street',d:''},{uid:'u10',k:'spot',n:'Omotesando',d:''},{uid:'u11',k:'spot',n:'Pokémon Center Shibuya + Bic Camera + Don Quijote',d:'Shibuya Parco, 6F.'}]},
+    {label:'Jantar',items:[{uid:'u12',k:'spot',n:'Shibuya Crossing',d:''},{uid:'u13',k:'spot',n:'Hachiko',d:''},{uid:'u14',k:'spot',n:'Pôr do sol no Hikarie Sky Lobby',d:''},{uid:'u15',k:'food',n:'Afuri Ramen (Shibuya)',d:'Direto, sem ir ao hotel. Yuzu Shio Ramen — caldo leve com toque cítrico; tem Tsukemen.'}]}]},
    {n:'03',dow:'Quarta',date:'16 set',city:'Kamakura',title:'Day trip a Kamakura',blocks:[
-    {label:'Pequeno-almoço',items:[{k:'cafe',n:'Rokumei Coffee Co.',d:'Dentro da Tokyo Station. Especialidade torrado na hora, conhecido pelo pour-over.'}]},
-    {label:'Manhã',items:[{t:'~57 min',k:'transit',n:'Tokyo Station → Kamakura (JR Yokosuka Line)',d:'',url:'https://www.google.com/maps/search/?api=1&query=Tokyo%20Station%20Japan'},{k:'spot',n:'Kotoku-in (Grande Buda)',d:'',temple:true},{k:'spot',n:'Hase-dera Temple',d:'',temple:true}]},
-    {label:'Almoço',items:[{k:'food',n:'Kaedena',d:'Donabe gohan (arroz em claypot) com 7 acompanhamentos.',url:'https://maps.app.goo.gl/DrsUbkJNRjP3orfi8?g_st=ac'}]},
-    {label:'Tarde',items:[{k:'spot',n:'Tsurugaoka Hachimangu Shrine',d:''},{k:'spot',n:'Yuigahama Beach',d:'Extra, se sobrar tempo.'}]},
-    {label:'Jantar',items:[{k:'food',n:'Tonkatsu Aoki Akasaka',d:'A 1 min a pé do hotel.'}]}]},
+    {label:'Pequeno-almoço',items:[{uid:'u16',k:'cafe',n:'Rokumei Coffee Co.',d:'Dentro da Tokyo Station. Especialidade torrado na hora, conhecido pelo pour-over.'}]},
+    {label:'Manhã',items:[{uid:'u17',t:'~57 min',k:'transit',n:'Tokyo Station → Kamakura (JR Yokosuka Line)',d:'',url:'https://www.google.com/maps/search/?api=1&query=Tokyo%20Station%20Japan'},{uid:'u18',k:'spot',n:'Kotoku-in (Grande Buda)',d:'',temple:true},{uid:'u19',k:'spot',n:'Hase-dera Temple',d:'',temple:true}]},
+    {label:'Almoço',items:[{uid:'u20',k:'food',n:'Kaedena',d:'Donabe gohan (arroz em claypot) com 7 acompanhamentos.',url:'https://maps.app.goo.gl/DrsUbkJNRjP3orfi8?g_st=ac'}]},
+    {label:'Tarde',items:[{uid:'u21',k:'spot',n:'Tsurugaoka Hachimangu Shrine',d:''},{uid:'u22',k:'spot',n:'Yuigahama Beach',d:'Extra, se sobrar tempo.'}]},
+    {label:'Jantar',items:[{uid:'u23',k:'food',n:'Tonkatsu Aoki Akasaka',d:'A 1 min a pé do hotel.'}]}]},
    {n:'04',dow:'Quinta',date:'17 set',city:'Tóquio',title:'Ginza, Tsukiji & Nihombashi',blocks:[
-    {label:'Pequeno-almoço',items:[{k:'cafe',n:'Common (Roppongi)',d:'Breakfast plate + sandes de abacate.',url:'https://maps.app.goo.gl/TDpeUEvBSChbvEuT9?g_st=aw'}]},
-    {label:'Manhã',items:[{k:'spot',n:'Tsukiji Outer Market',d:''},{k:'spot',n:'Ginza Six',d:''}]},
-    {label:'Almoço',items:[{k:'food',n:'Kobe Beef Wagyu Halal Hamburger Pizza & Steak',d:'Hambúrguer de Kobe Beef Wagyu. Aberto 11:00–23:00.'}]},
-    {label:'Tarde',items:[{t:'~16h',k:'spot',n:'Imperial Palace East Gardens',d:'Antes do fecho, ~16h–17h.'},{k:'spot',n:'Tokyo Station e arredores — compras',d:''}]},
-    {label:'Jantar',items:[{t:'21:00',k:'food',n:'Sushi Tokyo Ten (Roppongi)',d:'RESERVADO. Omakase ao balcão, ~25 pratos.',url:'https://maps.app.goo.gl/72ktadn5Aa8Tsszt7?g_st=aw'}]}]},
+    {label:'Pequeno-almoço',items:[{uid:'u24',k:'cafe',n:'Common (Roppongi)',d:'Breakfast plate + sandes de abacate.',url:'https://maps.app.goo.gl/TDpeUEvBSChbvEuT9?g_st=aw'}]},
+    {label:'Manhã',items:[{uid:'u25',k:'spot',n:'Tsukiji Outer Market',d:''},{uid:'u26',k:'spot',n:'Ginza Six',d:''}]},
+    {label:'Almoço',items:[{uid:'u27',k:'food',n:'Kobe Beef Wagyu Halal Hamburger Pizza & Steak',d:'Hambúrguer de Kobe Beef Wagyu. Aberto 11:00–23:00.'}]},
+    {label:'Tarde',items:[{uid:'u28',t:'~16h',k:'spot',n:'Imperial Palace East Gardens',d:'Antes do fecho, ~16h–17h.'},{uid:'u29',k:'spot',n:'Tokyo Station e arredores — compras',d:''}]},
+    {label:'Jantar',items:[{uid:'u30',t:'21:00',k:'food',n:'Sushi Tokyo Ten (Roppongi)',d:'RESERVADO. Omakase ao balcão, ~25 pratos.',url:'https://maps.app.goo.gl/72ktadn5Aa8Tsszt7?g_st=aw'}]}]},
    {n:'05',dow:'Sexta',date:'18 set',city:'Tóquio',title:'Ueno & Akihabara',blocks:[
-    {label:'Pequeno-almoço',items:[{k:'cafe',n:'THE CITY BAKERY Akasaka',d:'Ark Hills, ~5-8 min a pé. Famosa pelo Pretzel Croissant.'}]},
-    {label:'Manhã',items:[{k:'spot',n:'Ueno Park + Tokyo National Museum ou Ueno Zoo',d:'Escolher um.',url:'https://maps.app.goo.gl/m3u5ENW827QYi3rg8'},{k:'spot',n:'Ameyoko Market',d:''},{k:'spot',n:'Yodobashi Camera Multimedia Ueno',d:''}]},
-    {label:'Almoço',items:[{k:'food',n:'Tonkatsu Yamabe / Tonkatsu Marugo',d:'Yamabe: Ueno/Ameyoko, fim da manhã. Marugo: Akihabara, início da tarde.',url:'https://maps.app.goo.gl/eJqaxrTWc3mm6Mar7?g_st=aw'}]},
-    {label:'Tarde',items:[{k:'spot',n:'Akihabara',d:'Radio Kaikan, Trader Headquarters, Yodobashi, Super Potato.'}]},
-    {label:'Jantar',items:[{t:'20:30',k:'food',n:'Sabasu (Pizza)',d:'RESERVADO. 7 min a pé do hotel. Só possível com reserva antecipada.'}]}]},
+    {label:'Pequeno-almoço',items:[{uid:'u31',k:'cafe',n:'THE CITY BAKERY Akasaka',d:'Ark Hills, ~5-8 min a pé. Famosa pelo Pretzel Croissant.'}]},
+    {label:'Manhã',items:[{uid:'u32',k:'spot',n:'Ueno Park + Tokyo National Museum ou Ueno Zoo',d:'Escolher um.',url:'https://maps.app.goo.gl/m3u5ENW827QYi3rg8'},{uid:'u33',k:'spot',n:'Ameyoko Market',d:''},{uid:'u34',k:'spot',n:'Yodobashi Camera Multimedia Ueno',d:''}]},
+    {label:'Almoço',items:[{uid:'u35',k:'food',n:'Tonkatsu Yamabe / Tonkatsu Marugo',d:'Yamabe: Ueno/Ameyoko, fim da manhã. Marugo: Akihabara, início da tarde.',url:'https://maps.app.goo.gl/eJqaxrTWc3mm6Mar7?g_st=aw'}]},
+    {label:'Tarde',items:[{uid:'u36',k:'spot',n:'Akihabara',d:'Radio Kaikan, Trader Headquarters, Yodobashi, Super Potato.'}]},
+    {label:'Jantar',items:[{uid:'u37',t:'20:30',k:'food',n:'Sabasu (Pizza)',d:'RESERVADO. 7 min a pé do hotel. Só possível com reserva antecipada.'}]}]},
    {n:'06',dow:'Sábado',date:'19 set',city:'Tóquio',title:'Asakusa & Shinjuku',blocks:[
-    {label:'Pequeno-almoço',items:[{k:'cafe',n:'UESHIMA COFFEE LOUNGE',d:'~10 min a pé. Café clássico japonês; toast set, French toast.',url:'https://maps.app.goo.gl/QHxG5UNHu5J5bKG77?g_st=aw'}]},
-    {label:'Manhã',items:[{k:'spot',n:'Senso-ji (& Matchamon), Nakamise-dori',d:'',temple:true},{k:'spot',n:'Kaminarimon',d:''}]},
-    {label:'Almoço',items:[{k:'food',n:'Udon Shin (Yoyogi)',d:'Zona de Shinjuku. Icónico pelo Carbonara Udon.'}]},
-    {label:'Tarde',items:[{k:'spot',n:'Tarde livre / pausa',d:'Inclui deslocação até Shinjuku, ~30 min.'},{k:'spot',n:'Shinjuku Gyoen',d:''}]},
-    {label:'Noite',items:[{k:'spot',n:'Omoide Yokocho',d:''},{k:'spot',n:'Golden Gai',d:''}]},
-    {label:'Jantar',items:[{k:'food',n:'Teppan Baby Shinjuku',d:'Direto, sem ir ao hotel. Teppanyaki de porção individual, bom para okonomiyaki.'}]}]},
+    {label:'Pequeno-almoço',items:[{uid:'u38',k:'cafe',n:'UESHIMA COFFEE LOUNGE',d:'~10 min a pé. Café clássico japonês; toast set, French toast.',url:'https://maps.app.goo.gl/QHxG5UNHu5J5bKG77?g_st=aw'}]},
+    {label:'Manhã',items:[{uid:'u39',k:'spot',n:'Senso-ji (& Matchamon), Nakamise-dori',d:'',temple:true},{uid:'u40',k:'spot',n:'Kaminarimon',d:''}]},
+    {label:'Almoço',items:[{uid:'u41',k:'food',n:'Udon Shin (Yoyogi)',d:'Zona de Shinjuku. Icónico pelo Carbonara Udon.'}]},
+    {label:'Tarde',items:[{uid:'u42',k:'spot',n:'Tarde livre / pausa',d:'Inclui deslocação até Shinjuku, ~30 min.'},{uid:'u43',k:'spot',n:'Shinjuku Gyoen',d:''}]},
+    {label:'Noite',items:[{uid:'u44',k:'spot',n:'Omoide Yokocho',d:''},{uid:'u45',k:'spot',n:'Golden Gai',d:''}]},
+    {label:'Jantar',items:[{uid:'u46',k:'food',n:'Teppan Baby Shinjuku',d:'Direto, sem ir ao hotel. Teppanyaki de porção individual, bom para okonomiyaki.'}]}]},
    {n:'07',dow:'Domingo',date:'20 set',city:'Kyoto',title:'Checkout e viagem para Kyoto',blocks:[
-    {label:'Pequeno-almoço',items:[{t:'9:30',k:'cafe',n:'Tokyo Little House',d:'1 min a pé. Matcha latte + torrada de canela.'}]},
-    {label:'Manhã',items:[{t:'10:45',k:'hotel',n:'Checkout do Alfit Akasaka',d:''},{t:'12:30',k:'transit',n:'Shinkansen Nozomi 33 → Kyoto',d:'Chegada 14:44. Green, Car.9, Seat 14-A/B.',url:'https://www.google.com/maps/search/?api=1&query=Tokyo%20Station%20Japan'}]},
-    {label:'Almoço',items:[{k:'food',n:'Ekiben (Tokyo Station)',d:'Comprar antes de embarcar no Shinkansen.'}]},
-    {label:'Tarde',items:[{k:'hotel',n:'Check-in no Wayfarer Gojo',d:''}]},
-    {label:'Noite',items:[{k:'spot',n:'Pontocho Alley e Gion',d:''},{t:'21:00',k:'food',n:'Gion Nikutei Shin',d:'RESERVADO. Omi beef. Counter course com arroz em claypot.'}]}]},
+    {label:'Pequeno-almoço',items:[{uid:'u47',t:'9:30',k:'cafe',n:'Tokyo Little House',d:'1 min a pé. Matcha latte + torrada de canela.'}]},
+    {label:'Manhã',items:[{uid:'u48',t:'10:45',k:'hotel',n:'Checkout do Alfit Akasaka',d:''},{uid:'u49',t:'12:30',k:'transit',n:'Shinkansen Nozomi 33 → Kyoto',d:'Chegada 14:44. Green, Car.9, Seat 14-A/B.',url:'https://www.google.com/maps/search/?api=1&query=Tokyo%20Station%20Japan'}]},
+    {label:'Almoço',items:[{uid:'u50',k:'food',n:'Ekiben (Tokyo Station)',d:'Comprar antes de embarcar no Shinkansen.'}]},
+    {label:'Tarde',items:[{uid:'u51',k:'hotel',n:'Check-in no Wayfarer Gojo',d:''}]},
+    {label:'Noite',items:[{uid:'u52',k:'spot',n:'Pontocho Alley e Gion',d:''},{uid:'u53',t:'21:00',k:'food',n:'Gion Nikutei Shin',d:'RESERVADO. Omi beef. Counter course com arroz em claypot.'}]}]},
    {n:'08',dow:'Segunda',date:'21 set',city:'Kyoto',title:'Higashiyama (Silver Week)',blocks:[
-    {label:'Pequeno-almoço',items:[{k:'cafe',n:'LEN Hotel',d:''}]},
-    {label:'Manhã',items:[{t:'7 min',k:'transit',n:'Hotel → Kiyomizu-Gojo Station → Fushimi Inari',d:'Keihan Main Line, 4-5 min.'},{k:'spot',n:'Fushimi Inari Taisha',d:''},{k:'spot',n:'Kiyomizu-dera',d:'',temple:true}]},
-    {label:'Almoço',items:[{k:'food',n:'Koyori / Kyoto Wagyu Steak Sandwich / Kishi Zushi',d:'Koyori: opção principal, cash only, chef único, só 2 sets de menu.'}]},
-    {label:'Tarde',items:[{k:'spot',n:'Ninenzaka',d:''},{k:'spot',n:'Sannenzaka',d:''},{k:'spot',n:'Kenninji Temple',d:'',temple:true},{k:'spot',n:'Shirakawa Canal (Gion)',d:'Ao entardecer.'}]},
-    {label:'Jantar',items:[{k:'food',n:'Daruma Tacos',d:''}]}]},
+    {label:'Pequeno-almoço',items:[{uid:'u54',k:'cafe',n:'LEN Hotel',d:''}]},
+    {label:'Manhã',items:[{uid:'u55',t:'7 min',k:'transit',n:'Hotel → Kiyomizu-Gojo Station → Fushimi Inari',d:'Keihan Main Line, 4-5 min.'},{uid:'u56',k:'spot',n:'Fushimi Inari Taisha',d:''},{uid:'u57',k:'spot',n:'Kiyomizu-dera',d:'',temple:true}]},
+    {label:'Almoço',items:[{uid:'u58',k:'food',n:'Koyori / Kyoto Wagyu Steak Sandwich / Kishi Zushi',d:'Koyori: opção principal, cash only, chef único, só 2 sets de menu.'}]},
+    {label:'Tarde',items:[{uid:'u59',k:'spot',n:'Ninenzaka',d:''},{uid:'u60',k:'spot',n:'Sannenzaka',d:''},{uid:'u61',k:'spot',n:'Kenninji Temple',d:'',temple:true},{uid:'u62',k:'spot',n:'Shirakawa Canal (Gion)',d:'Ao entardecer.'}]},
+    {label:'Jantar',items:[{uid:'u63',k:'food',n:'Daruma Tacos',d:''}]}]},
    {n:'09',dow:'Terça',date:'22 set',city:'Kyoto',title:'Arashiyama + Kinkaku-ji',blocks:[
-    {label:'Pequeno-almoço',items:[{k:'cafe',n:'Sakura Cafe Hanon / Matcha Cafe Hanon',d:'Perto de Kyoto-Kawaramachi. Fluffy pancakes. Chegar cedo — não aceita reservas de manhã.'}]},
-    {label:'Manhã',items:[{k:'spot',n:'Arashiyama Bamboo Forest',d:''},{k:'spot',n:'Tenryu-ji Temple',d:'',temple:true}]},
-    {label:'Almoço',items:[{k:'food',n:'Arashiyama Yoshimura',d:''}]},
+    {label:'Pequeno-almoço',items:[{uid:'u64',k:'cafe',n:'Sakura Cafe Hanon / Matcha Cafe Hanon',d:'Perto de Kyoto-Kawaramachi. Fluffy pancakes. Chegar cedo — não aceita reservas de manhã.'}]},
+    {label:'Manhã',items:[{uid:'u65',k:'spot',n:'Arashiyama Bamboo Forest',d:''},{uid:'u66',k:'spot',n:'Tenryu-ji Temple',d:'',temple:true}]},
+    {label:'Almoço',items:[{uid:'u67',k:'food',n:'Arashiyama Yoshimura',d:''}]},
     {label:'Tarde',items:[]},
-    {label:'Jantar',items:[{uid:'udogcaferio22set',t:'19:00',k:'cafe',n:'Dog Cafe Rio',d:'RESERVADO.'},{k:'food',n:'Musashi Sushi (Teramachi/Sanjo)',d:'Conveyor belt sushi. Aberto todos os dias 11:00–22:00.',url:'https://maps.app.goo.gl/MRKwFNQNxkZQ7HNy9?g_st=aw'},{uid:'uchao22set',k:'food',n:'Chao',d:'Gyosas'}]}]},
+    {label:'Jantar',items:[{uid:'udogcaferio22set',t:'19:00',k:'cafe',n:'Dog Cafe Rio',d:'RESERVADO.'},{uid:'u69',k:'food',n:'Musashi Sushi (Teramachi/Sanjo)',d:'Conveyor belt sushi. Aberto todos os dias 11:00–22:00.',url:'https://maps.app.goo.gl/MRKwFNQNxkZQ7HNy9?g_st=aw'},{uid:'uchao22set',k:'food',n:'Chao',d:'Gyosas'}]}]},
    {n:'10',dow:'Quarta',date:'23 set',city:'Osaka',title:'Viagem para Osaka + Dotonbori',blocks:[
-    {label:'Pequeno-almoço',items:[{t:'9:30',k:'cafe',n:'ROBYN',d:'Em frente ao hotel. Café de bairro. Abre às 9:00.'}]},
-    {label:'Manhã',items:[{t:'10:30',k:'hotel',n:'Checkout do Wayfarer Gojo',d:''},{k:'transit',n:'Hotel → Gojo Station → Kyoto Station',d:'A pé 7-10 min + metro Karasuma, 2 min.'},{t:'11:33',k:'transit',n:'Shinkansen Nozomi 137 → Osaka',d:'Car.2, Seat 18-D/E, ¥6.560.'},{k:'spot',n:'Osaka Castle + Nishinomaru Garden',d:''},{t:'15:00',k:'hotel',n:'Check-in no Royal Park Canvas Kitahama',d:'A partir das 15h.'}]},
-    {label:'Almoço',items:[{k:'food',n:'Sandwich Parlour 47',d:'Vista para o rio, sandes frescas e limonada caseira.'}]},
-    {label:'Tarde',items:[{uid:'ucafechaniwa23set',k:'cafe',n:'Café no Chaniwa',d:'',url:'https://maps.app.goo.gl/T65wxPsf4pYVgjkn6?g_st=ac'},{k:'spot',n:'Dotonbori',d:''},{k:'spot',n:'Hozenji Yokocho',d:''},{k:'spot',n:'Edion Namba',d:''},{k:'spot',n:'Pokémon Center Osaka DX',d:'Daimaru Shinsaibashi.'}]},
-    {label:'Jantar',items:[{k:'food',n:'Ramen Choro / Dashimaki Sakaba Zerogo / Sushi no Suke Kitahama',d:'Escolher no dia. Ramen Choro: muito popular, considerar reservar.'}]}]},
+    {label:'Pequeno-almoço',items:[{uid:'u70',t:'9:30',k:'cafe',n:'ROBYN',d:'Em frente ao hotel. Café de bairro. Abre às 9:00.'}]},
+    {label:'Manhã',items:[{uid:'u71',t:'10:30',k:'hotel',n:'Checkout do Wayfarer Gojo',d:''},{uid:'u72',k:'transit',n:'Hotel → Gojo Station → Kyoto Station',d:'A pé 7-10 min + metro Karasuma, 2 min.'},{uid:'u73',t:'11:33',k:'transit',n:'Shinkansen Nozomi 137 → Osaka',d:'Car.2, Seat 18-D/E, ¥6.560.'},{uid:'u74',k:'spot',n:'Osaka Castle + Nishinomaru Garden',d:''},{uid:'u75',t:'15:00',k:'hotel',n:'Check-in no Royal Park Canvas Kitahama',d:'A partir das 15h.'}]},
+    {label:'Almoço',items:[{uid:'u76',k:'food',n:'Sandwich Parlour 47',d:'Vista para o rio, sandes frescas e limonada caseira.'}]},
+    {label:'Tarde',items:[{uid:'ucafechaniwa23set',k:'cafe',n:'Café no Chaniwa',d:'',url:'https://maps.app.goo.gl/T65wxPsf4pYVgjkn6?g_st=ac'},{uid:'u77',k:'spot',n:'Dotonbori',d:''},{uid:'u78',k:'spot',n:'Hozenji Yokocho',d:''},{uid:'u79',k:'spot',n:'Edion Namba',d:''},{uid:'u80',k:'spot',n:'Pokémon Center Osaka DX',d:'Daimaru Shinsaibashi.'}]},
+    {label:'Jantar',items:[{uid:'u81',k:'food',n:'Ramen Choro / Dashimaki Sakaba Zerogo / Sushi no Suke Kitahama',d:'Escolher no dia. Ramen Choro: muito popular, considerar reservar.'}]}]},
    {n:'11',dow:'Quinta',date:'24 set',city:'Osaka',title:'Universal Studios Japan',blocks:[
-    {label:'Pequeno-almoço',items:[{t:'9:00',k:'cafe',n:'MAZE CAFE BRUNCH LOUNGE',d:'Perto do hotel. French toast, eggs Benedict.'}]},
-    {label:'Manhã',items:[{t:'~25 min',k:'transit',n:'Kitahama → Kyobashi → Nishikujo → Universal City',d:'Keihan + JR Loop + JR Yumesaki, ~25-30 min.'},{t:'10:30',k:'spot',n:'Super Nintendo World',d:'Timed Entry 10:30-11:30 + Mario Kart: Koopa’s Challenge.'},{t:'10:30',k:'spot',n:'Mine Cart Madness',d:'10:30-11:00.'}]},
-    {label:'Almoço',items:[{k:'food',n:'Discovery Restaurant / Louie’s N.Y. Pizza Parlor',d:'Dentro do parque. Discovery: hambúrgueres. Louie’s: pizza estilo Nova Iorque.'}]},
-    {label:'Tarde',items:[{k:'spot',n:'Despicable Me, Harry Potter and the Forbidden Journey, JAWS',d:''}]},
-    {label:'Jantar',items:[{k:'food',n:'GYUKATSU Kyoto Katsugyu (Universal Citywalk) / 7-Eleven',d:'Gyukatsu grelhado à mesa no Citywalk, ou perto do hotel.',url:'https://maps.app.goo.gl/dGYEW3XRtPVMFU128'}]}]},
+    {label:'Pequeno-almoço',items:[{uid:'u82',t:'9:00',k:'cafe',n:'MAZE CAFE BRUNCH LOUNGE',d:'Perto do hotel. French toast, eggs Benedict.'}]},
+    {label:'Manhã',items:[{uid:'u83',t:'~25 min',k:'transit',n:'Kitahama → Kyobashi → Nishikujo → Universal City',d:'Keihan + JR Loop + JR Yumesaki, ~25-30 min.'},{uid:'u84',t:'10:30',k:'spot',n:'Super Nintendo World',d:'Timed Entry 10:30-11:30 + Mario Kart: Koopa’s Challenge.'},{uid:'u85',t:'10:30',k:'spot',n:'Mine Cart Madness',d:'10:30-11:00.'}]},
+    {label:'Almoço',items:[{uid:'u86',k:'food',n:'Discovery Restaurant / Louie’s N.Y. Pizza Parlor',d:'Dentro do parque. Discovery: hambúrgueres. Louie’s: pizza estilo Nova Iorque.'}]},
+    {label:'Tarde',items:[{uid:'u87',k:'spot',n:'Despicable Me, Harry Potter and the Forbidden Journey, JAWS',d:''}]},
+    {label:'Jantar',items:[{uid:'u88',k:'food',n:'GYUKATSU Kyoto Katsugyu (Universal Citywalk) / 7-Eleven',d:'Gyukatsu grelhado à mesa no Citywalk, ou perto do hotel.',url:'https://maps.app.goo.gl/dGYEW3XRtPVMFU128'}]}]},
    {n:'12',dow:'Sexta',date:'25-26 set',city:'Regresso',title:'Sem turismo — voo para Lisboa',blocks:[
-    {label:'Pequeno-almoço',items:[{t:'8:30',k:'cafe',n:'Pain Karato',d:'Ao lado do hotel, abre 8h. Boulangerie, sopa, pão.'}]},
-    {label:'Manhã',items:[{t:'9:30',k:'hotel',n:'Checkout do Royal Park Canvas Kitahama',d:''},{t:'10:30',k:'transit',n:'Shinkansen Nozomi 10 → Tóquio',d:'10:30-12:57, Green, Car.8, Seat 8-A/B (~2h30).',url:'https://www.google.com/maps/search/?api=1&query=Shin-Osaka%20Station%20Japan'}]},
-    {label:'Almoço',items:[{k:'food',n:'Ekiben (Shin-Osaka Station)',d:'Comprar antes de embarcar.'}]},
-    {label:'Tarde',items:[{k:'food',n:'Lanche 7-Eleven (Tokyo Station)',d:'Antes de seguir para Narita.'},{t:'~1h',k:'transit',n:'Narita Express até ao aeroporto',d:'Chegada com 3h de antecedência.'}]},
-    {label:'Noite',items:[{t:'18:00',k:'transit',n:'EY801 Tóquio → Abu Dhabi',d:'18:00-00:20.'},{t:'02:05',k:'transit',n:'EY99 Abu Dhabi → Lisboa',d:'02:05-~07:20, dia 26/9.'}]}]}
+    {label:'Pequeno-almoço',items:[{uid:'u89',t:'8:30',k:'cafe',n:'Pain Karato',d:'Ao lado do hotel, abre 8h. Boulangerie, sopa, pão.'}]},
+    {label:'Manhã',items:[{uid:'u90',t:'9:30',k:'hotel',n:'Checkout do Royal Park Canvas Kitahama',d:''},{uid:'u91',t:'10:30',k:'transit',n:'Shinkansen Nozomi 10 → Tóquio',d:'10:30-12:57, Green, Car.8, Seat 8-A/B (~2h30).',url:'https://www.google.com/maps/search/?api=1&query=Shin-Osaka%20Station%20Japan'}]},
+    {label:'Almoço',items:[{uid:'u92',k:'food',n:'Ekiben (Shin-Osaka Station)',d:'Comprar antes de embarcar.'}]},
+    {label:'Tarde',items:[{uid:'u93',k:'food',n:'Lanche 7-Eleven (Tokyo Station)',d:'Antes de seguir para Narita.'},{uid:'u94',t:'~1h',k:'transit',n:'Narita Express até ao aeroporto',d:'Chegada com 3h de antecedência.'}]},
+    {label:'Noite',items:[{uid:'u95',t:'18:00',k:'transit',n:'EY801 Tóquio → Abu Dhabi',d:'18:00-00:20.'},{uid:'u96',t:'02:05',k:'transit',n:'EY99 Abu Dhabi → Lisboa',d:'02:05-~07:20, dia 26/9.'}]}]}
   ];
 
   var RESERVAS = [
@@ -188,13 +188,16 @@ textarea{font-family:inherit}
     SYNC_DOC = db.collection('itineraries').doc('3cdc7402b7f7ca83948c6ecc0b4ce1f6');
   } catch (e) {}
 
-  // uidCounter atribui uids por ordem de leitura do DAYS. Qualquer item
-  // inserido no MEIO do array (não no fim) desloca essa contagem e faz
-  // colidir com uids já persistidos de itens seguintes — corrompendo-os
-  // via syncItemContent (o item errado passa a "corresponder" ao uid).
-  // Por isso, todo o item novo inserido no meio de um dia/secção já
-  // existente TEM de levar um uid fixo explícito no próprio DAYS (ver
-  // 'Café no Chaniwa' e 'Dog Cafe Rio'), para não consumir a contagem.
+  // Todos os itens de DAYS têm agora um uid FIXO explícito, escrito no
+  // próprio array (não gerado por contagem). Isto é de propósito: tanto
+  // inserir como remover um item no MEIO do array desloca uma contagem
+  // sequencial para todos os itens seguintes, fazendo-os colidir com
+  // uids já persistidos e corrompendo-os via syncItemContent (o item
+  // errado passa a "corresponder" ao uid) — já aconteceu duas vezes
+  // (Café no Chaniwa/Dog Cafe Rio a inserir, Kinkaku-ji a remover).
+  // uidCounter só serve de rede de segurança para um item nunca deixado
+  // sem uid; qualquer item novo ou existente TEM de levar sempre um uid
+  // fixo explícito no próprio DAYS.
   var uidCounter = 0;
   function seedData() {
     return DAYS.map(function (d) {
